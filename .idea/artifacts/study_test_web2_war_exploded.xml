@@ -14,8 +14,12 @@
           <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.2" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.3.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.3.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.3.3.RELEASE" />
           <element id="archive" name="study-test1-api-1.0-SNAPSHOT.jar">
             <element id="module-output" name="study-test1-api" />
+          </element>
+          <element id="archive" name="study-test1-service-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="study-test1-service" />
           </element>
         </element>
       </element>

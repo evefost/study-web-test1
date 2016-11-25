@@ -24,10 +24,19 @@
             <artifactId>spring-web</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>com.big.data</groupId>
             <artifactId>study-test1-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.big.data</groupId>
+            <artifactId>study-test1-service</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
