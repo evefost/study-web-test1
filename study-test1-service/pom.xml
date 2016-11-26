@@ -50,7 +50,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <!--排除所有不同环境配置-->
+                <!--排除所不打包环境配置-->
                 <excludes>
                     <exclude>env/dev/*</exclude>
                     <exclude>env/local/*</exclude>

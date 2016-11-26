@@ -66,8 +66,10 @@
         <!--<sourceDirectory>src</sourceDirectory>-->
         <resources>
             <resource>
+                <!--提定打包资源路径-->
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <!--排除不打包的资源-->
                 <excludes>
                     <exclude>env/dev/*</exclude>
                     <exclude>env/local/*</exclude>
@@ -90,16 +92,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.4</version>
-
                 <configuration>
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
                     </archive>
-                    <warName>study_test1</warName>
-
-
+                    <warName>study－test1－web</warName>
                     <webResources>
                         <resource>
+                            <!--提指打包变量及结果放在目的路径-->
                             <directory>src/main/resources/${package.environment}</directory>
                             <targetPath>WEB-INF/classes</targetPath>
                             <filtering>true</filtering>
