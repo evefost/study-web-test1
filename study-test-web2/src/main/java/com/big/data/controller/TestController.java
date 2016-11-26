@@ -1,5 +1,6 @@
 package com.big.data.controller;
 
+import com.big.data.entity.TestBean;
 import com.big.data.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +21,20 @@ public class TestController {
 
     @RequestMapping(value = "serviceVersion", method = RequestMethod.GET)
     @ResponseBody
-    public String registerBox() {
+    public String getVersion() {
 
         logger.debug("cdebug");
         logger.info("cinfo");
         logger.error("cerror");
         return testService.getVersion();
+    }
+
+    @RequestMapping(value = "getNameById", method = RequestMethod.GET)
+    @ResponseBody
+    public String getNameById(Integer id) {
+        logger.info("id:" + id);
+        TestBean nameById = testService.getNameById(id);
+        logger.info("name::" + nameById.getName());
+        return nameById.getName();
     }
 }

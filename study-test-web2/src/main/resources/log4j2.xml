@@ -70,7 +70,7 @@
     <root >
         <level value="INFO"/>
         <!-- 将 logger 中 additivity=true 的日志或者没有指定<logger>的append输出到控制台 -->
-    <!--    <appender-ref ref="consoleAppend"/>-->
+        <appender-ref ref="consoleAppend"/>
         <!-- 将全局的 error 日志输出到error文件中 -->
         <appender-ref ref="errorAppend"/>
         <!--   &lt;!&ndash;<appender-ref ref="bizAppend"/>-->-->
