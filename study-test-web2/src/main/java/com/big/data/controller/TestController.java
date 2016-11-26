@@ -1,7 +1,6 @@
 package com.big.data.controller;
 
 import com.big.data.service.TestService;
-import com.big.data.util.LoggerFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

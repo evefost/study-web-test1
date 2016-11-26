@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>study-test1</artifactId>
@@ -13,6 +13,7 @@
     <properties>
         <org.springframework.version>4.3.3.RELEASE</org.springframework.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.big.data</groupId>
@@ -34,11 +35,79 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.3.3.RELEASE</version>
+            <version>${org.springframework.version}</version>
         </dependency>
 
     </dependencies>
+
+
+    <!--多环境打包配置-->
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <package.environment>env/local</package.environment>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <package.environment>env/dev</package.environment>
+            </properties>
+        </profile>
+
+    </profiles>
+
     <build>
         <finalName>study-test1-web2</finalName>
+        <!--<sourceDirectory>src</sourceDirectory>-->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>env/dev/*</exclude>
+                    <exclude>env/local/*</exclude>
+                </excludes>
+            </resource>
+
+        </resources>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                    <warName>study_test1</warName>
+
+
+                    <webResources>
+                        <resource>
+                            <directory>src/main/resources/${package.environment}</directory>
+                            <targetPath>WEB-INF/classes</targetPath>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
+
 </project>
