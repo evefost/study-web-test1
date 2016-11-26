@@ -10,7 +10,7 @@
 	<!-- 打开Spring的Annotation支持 -->
 	<context:annotation-config />
     <!-- 扫描 service -->
-	<context:component-scan base-package="com.big.api.service.*"/>
+	<context:component-scan base-package="com.big.data.service.*"/>
 
 
 </beans>
