@@ -3,30 +3,26 @@
     <parent>
         <artifactId>study-test1</artifactId>
         <groupId>com.big.data</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <version>${project.version}</version>
     <artifactId>study-test1-web2</artifactId>
     <packaging>war</packaging>
     <name>study-test1-web2 Maven Webapp</name>
     <url>http://maven.apache.org</url>
-    <properties>
-        <org.springframework.version>4.3.3.RELEASE</org.springframework.version>
-    </properties>
+    <!--<properties>-->
+        <!--<org.springframework.version>4.3.4.RELEASE</org.springframework.version>-->
+    <!--</properties>-->
 
     <dependencies>
         <dependency>
             <groupId>com.big.data</groupId>
             <artifactId>study-test1-service</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!--spring mvc 依懒-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${org.springframework.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
