@@ -11,9 +11,6 @@
     <packaging>war</packaging>
     <name>study-test1-web2 Maven Webapp</name>
     <url>http://maven.apache.org</url>
-    <!--<properties>-->
-        <!--<org.springframework.version>4.3.4.RELEASE</org.springframework.version>-->
-    <!--</properties>-->
 
     <dependencies>
         <dependency>
@@ -22,6 +19,11 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.big.data</groupId>
+            <artifactId>big.data.im.service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--spring mvc 依懒-->
         <dependency>
             <groupId>org.springframework</groupId>

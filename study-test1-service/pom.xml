@@ -68,8 +68,8 @@
     </profiles>
 
     <build>
-        <finalName>study-test1-service</finalName>
-        <!--<sourceDirectory>src</sourceDirectory>-->
+        <!--打包结果名称-->
+        <finalName>study-test-service</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -87,4 +87,5 @@
             </resource>
         </resources>
     </build>
+
 </project>

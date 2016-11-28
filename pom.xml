@@ -12,6 +12,7 @@
         <module>study-test1-api</module>
         <module>study-test1-service</module>
         <module>study-test-web2</module>
+        <module>study_im_service</module>
     </modules>
     <properties>
         <project.version>1.0.0</project.version>

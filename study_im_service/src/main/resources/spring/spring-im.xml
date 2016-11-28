@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	  http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <!-- im bootstap -->
+    <bean id="testHandler" class="com.im.server.core.IMServer"
+          init-method="bind">
+        <property name="port" value="12345"/>
+    </bean>
+
+    <bean id="contextHolder" class="com.im.manage.session.ContextHolder"/>
+    <!-- 推送 -->
+    <bean id="messagePusher" class="com.im.manage.push.MessagePusher">
+        <property name="sessionManager" ref="defaultSessionManager"/>
+    </bean>
+    <!-- sesion 管理 -->
+    <bean id="defaultSessionManager" class="com.im.manage.session.DefaultSessionManager"/>
+</beans>
