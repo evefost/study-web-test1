@@ -39,38 +39,43 @@ public final class IMServer {
 
     public void bind() {
 
-        logger.warn("ServerBootstrap 启动......");
-        System.out.println("ServerBootstrap 启动......");
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-        try {
-            // 码创建 ServerBootstrap 实例
-            ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(bossGroup, workerGroup);
-            bootstrap.channel(NioServerSocketChannel.class);
-            // .添加 EchoServerHandler 到 Channel 的 ChannelPipeline
-            bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                public void initChannel(SocketChannel ch) throws Exception {
-                    logger.info("新连接=======remoteAddress>" + ch.remoteAddress());
-                    ChannelPipeline p = ch.pipeline();
-                    p.addLast(new ProtobufDecoder(Message.Data.getDefaultInstance()));
-                    p.addLast(new ProtobufEncoder());
-                    p.addLast(new IMChannelHandler());
-                }
-            });
+        new Thread(new Runnable() {
+            public void run() {
+                System.out.println("ServerBootstrap 启动......");
+                EventLoopGroup bossGroup = new NioEventLoopGroup();
+                EventLoopGroup workerGroup = new NioEventLoopGroup();
+                try {
+                    // 码创建 ServerBootstrap 实例
+                    ServerBootstrap bootstrap = new ServerBootstrap();
+                    bootstrap.group(bossGroup, workerGroup);
+                    bootstrap.channel(NioServerSocketChannel.class);
+                    // .添加 EchoServerHandler 到 Channel 的 ChannelPipeline
+                    bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch) throws Exception {
+                            logger.info("新连接=======remoteAddress>" + ch.remoteAddress());
+                            ChannelPipeline p = ch.pipeline();
+                            p.addLast(new ProtobufDecoder(Message.Data.getDefaultInstance()));
+                            p.addLast(new ProtobufEncoder());
+                            p.addLast(new IMChannelHandler());
+                        }
+                    });
 
-            bootstrap.bind(port).sync().channel().closeFuture().sync();
-            logger.warn("绑定成功 port:" + port);
-            System.out.println("绑定成功 port:" + port);
-        } catch (Exception e) {
-            logger.error("绑定异常bindEx:" + e.toString());
-            System.out.println("绑定异常bindEx:" + e.toString());
-        } finally {
-            logger.error("绑定finally");
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
-        }
+                    bootstrap.bind(port).sync().channel().closeFuture().sync();
+                    logger.warn("绑定成功 port:" + port);
+                    System.out.println("绑定成功 port:" + port);
+                } catch (Exception e) {
+                    logger.error("绑定异常bindEx:" + e.toString());
+                    System.out.println("绑定异常bindEx:" + e.toString());
+                } finally {
+                    logger.error("绑定finally");
+                    workerGroup.shutdownGracefully();
+                    bossGroup.shutdownGracefully();
+                }
+            }
+        }).start();
+        logger.warn("ServerBootstrap 启动......");
+
 //
     }
 

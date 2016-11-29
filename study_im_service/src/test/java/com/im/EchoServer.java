@@ -16,7 +16,10 @@
 package com.im;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -63,16 +66,16 @@ public final class EchoServer {
                     });
 
             // Start the server.
-            ChannelFuture f = b.bind(PORT).sync();
-
-            // Wait until the server socket is closed.
-            f.channel().closeFuture().sync();
-            System.out.println("==================");
-            System.out.println("==================");
+//            ChannelFuture f = b.bind(PORT).sync();
+//
+//            // Wait until the server socket is closed.
+//            f.channel().closeFuture().sync();
+//            System.out.println("==================");
+//            System.out.println("==================");
         } finally {
             // Shut down all event loops to terminate all threads.
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+//            bossGroup.shutdownGracefully();
+//            workerGroup.shutdownGracefully();
         }
     }
 }
