@@ -46,43 +46,28 @@
         </dependency>
     </dependencies>
 
-    <!--多环境打包配置-->
-    <profiles>
-        <profile>
-            <id>local</id>
-            <properties>
-                <package.environment>env/local</package.environment>
-                <jdbc.usrname>root</jdbc.usrname>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <package.environment>env/dev</package.environment>
-            </properties>
-        </profile>
-
-    </profiles>
-
     <build>
         <!--打包结果名称-->
         <finalName>study-test-service</finalName>
+
         <resources>
+
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <!--排除所不打包环境配置-->
                 <excludes>
-                    <exclude>env/dev/*</exclude>
-                    <exclude>env/local/*</exclude>
+                    <exclude>env/**</exclude>
                 </excludes>
             </resource>
             <resource>
                 <!--指定打包某个环境变量配置-->
                 <directory>src/main/resources/${package.environment}</directory>
+                <targetPath>properties</targetPath>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources/${package.mode}</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>

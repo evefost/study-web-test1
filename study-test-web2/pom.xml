@@ -39,41 +39,21 @@
     </dependencies>
 
 
-    <!--多环境打包配置-->
-    <profiles>
-        <profile>
-            <id>local</id>
-            <properties>
-                <package.environment>env/local</package.environment>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <package.environment>env/dev</package.environment>
-            </properties>
-        </profile>
-
-    </profiles>
-
     <build>
         <finalName>study-test1-web2</finalName>
-        <!--<sourceDirectory>src</sourceDirectory>-->
         <resources>
+
             <resource>
-                <!--提定打包资源路径-->
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <!--排除不打包的资源-->
                 <excludes>
-                    <exclude>env/dev/*</exclude>
-                    <exclude>env/local/*</exclude>
+                    <exclude>env/**</exclude>
                 </excludes>
             </resource>
-
+            <resource>
+                <directory>src/main/resources/${package.mode}</directory>
+                <filtering>true</filtering>
+            </resource>
         </resources>
 
         <plugins>
@@ -90,6 +70,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.4</version>
+
                 <configuration>
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
@@ -102,6 +83,7 @@
                             <targetPath>WEB-INF/classes</targetPath>
                             <filtering>true</filtering>
                         </resource>
+
                     </webResources>
                 </configuration>
             </plugin>

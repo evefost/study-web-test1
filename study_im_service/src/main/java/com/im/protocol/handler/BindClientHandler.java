@@ -12,7 +12,7 @@ public class BindClientHandler extends ProtocolHandler {
     @Override
     public void handleRequest(ChannelHandlerContext ctx, Data data) {
         IMSession newSession = IMSession.buildSesion(ctx, data);
-        getSessionManager().addSession(IMSession.buildSesion(ctx, data));
+//        getSessionManager().addSession(IMSession.buildSesion(ctx, data));
         SessionUtils.reply(newSession, data.getCmd());
     }
 

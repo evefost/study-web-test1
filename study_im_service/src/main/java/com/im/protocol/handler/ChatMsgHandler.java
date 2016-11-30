@@ -3,7 +3,6 @@ package com.im.protocol.handler;
 import com.im.sdk.protocol.Message;
 import com.im.sdk.protocol.Message.Data;
 import com.im.sdk.protocol.Message.Data.Cmd;
-import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
 import com.im.server.util.XXTEA;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,12 +26,12 @@ public class ChatMsgHandler extends ProtocolHandler {
         reply.setCmd(Cmd.CHAT_TXT_ECHO_VALUE);
         reply.setCreateTime(data.getCreateTime());
         ctx.writeAndFlush(reply);
-        IMSession receiverSession = getSessionManager().getSession(data.getReceiverId());
-        if (receiverSession != null) {
-            receiverSession.write(data);
-        } else {
-            //该用户不存在或没在线
-        }
+//        IMSession receiverSession = getSessionManager().getSession(data.getReceiverId());
+//        if (receiverSession != null) {
+//            receiverSession.write(data);
+//        } else {
+//            //该用户不存在或没在线
+//        }
     }
 
     /**

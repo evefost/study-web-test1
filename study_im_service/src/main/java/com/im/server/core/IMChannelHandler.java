@@ -16,17 +16,14 @@
 package com.im.server.core;
 
 import com.im.sdk.protocol.Message;
-import com.im.sdk.protocol.Message.Data;
 import com.im.sdk.protocol.Message.Data.Cmd;
-import com.im.server.util.ProtocolHandllerLoader;
-import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Handler implementation for the echo server.
  */
-@Sharable
+//@Sharable
 public class IMChannelHandler extends ChannelHandlerAdapter {
 
     /**
@@ -36,26 +33,26 @@ public class IMChannelHandler extends ChannelHandlerAdapter {
 
     }
 
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) {
+//    @Override
+//    public void channelActive(ChannelHandlerContext ctx) {
+//
+//        System.out.println("channelActive 已连上服务器 发送聊天服务地址给客户端 :" + ctx.channel().remoteAddress());
+//        System.out.println("channelId :" + ctx.channel().id());
+//
+//    }
 
-        System.out.println("channelActive 已连上服务器 发送聊天服务地址给客户端 :" + ctx.channel().remoteAddress());
-        System.out.println("channelId :" + ctx.channel().id());
-
-    }
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-
-        Message.Data data = (Data) msg;
-        showMessageInfoLog(ctx, data);
-        ProtocolHandler handler = ProtocolHandllerLoader.getProtocolHandler(data.getCmd());
-        System.out.println("channelRead handler :" + handler);
-        if (handler != null) {
-            handler.handleRequest(ctx, data);
-        }
-
-    }
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+//
+//        Message.Data data = (Data) msg;
+//        showMessageInfoLog(ctx, data);
+//        ProtocolHandler handler = ProtocolHandllerLoader.getProtocolHandler(data.getCmd());
+//        System.out.println("channelRead handler :" + handler);
+//        if (handler != null) {
+//            handler.handleRequest(ctx, data);
+//        }
+//
+//    }
 
     private void showMessageInfoLog(ChannelHandlerContext ctx, Message.Data data) {
         switch (data.getCmd()) {
@@ -83,16 +80,16 @@ public class IMChannelHandler extends ChannelHandlerAdapter {
     /**
      * 检测到连接空闲事件，发送心跳请求命令
      */
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        //TODO
-        super.userEventTriggered(ctx, evt);
-    }
+//    @Override
+//    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+//        //TODO
+//       // super.userEventTriggered(ctx, evt);
+//    }
 
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.flush();
-    }
+//    @Override
+//    public void channelReadComplete(ChannelHandlerContext ctx) {
+//        ctx.flush();
+//    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
