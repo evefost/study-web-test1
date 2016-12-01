@@ -48,7 +48,7 @@
 
     <build>
         <!--打包结果名称-->
-        <finalName>study-test-service</finalName>
+        <finalName>study-service-${package.name_suff}</finalName>
 
         <resources>
 

@@ -40,7 +40,7 @@
 
 
     <build>
-        <finalName>study-test1-web2</finalName>
+        <finalName>study-web-${package.name_suff}</finalName>
         <resources>
 
             <resource>
@@ -75,7 +75,7 @@
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
                     </archive>
-                    <warName>study－test1－web</warName>
+                    <warName>study－web-${package.name_suff}</warName>
                     <webResources>
                         <resource>
                             <!--提指打包变量及结果放在目的路径-->
