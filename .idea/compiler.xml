@@ -25,6 +25,7 @@
         <module name="study-test-web2" />
         <module name="study-test1-api" />
         <module name="study-test1-service" />
+        <module name="study-test1-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -32,6 +33,7 @@
       <module name="study-test1" target="1.5" />
       <module name="study-test1-api" target="1.5" />
       <module name="study-test1-service" target="1.5" />
+      <module name="study-test1-web" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

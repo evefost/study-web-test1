@@ -11,7 +11,7 @@
     <modules>
         <module>study-test1-api</module>
         <module>study-test1-service</module>
-        <module>study-test-web2</module>
+        <module>study-test1-web</module>
     </modules>
 
     <dependencies>

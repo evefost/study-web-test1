@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/study-test-web2/study-test-web2.iml" filepath="$PROJECT_DIR$/study-test-web2/study-test-web2.iml" />
       <module fileurl="file://$PROJECT_DIR$/study-test1.iml" filepath="$PROJECT_DIR$/study-test1.iml" />
       <module fileurl="file://$PROJECT_DIR$/study-test1-api/study-test1-api.iml" filepath="$PROJECT_DIR$/study-test1-api/study-test1-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/study-test1-service/study-test1-service.iml" filepath="$PROJECT_DIR$/study-test1-service/study-test1-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/study-test1-web/study-test-web2.iml" filepath="$PROJECT_DIR$/study-test1-web/study-test-web2.iml" />
     </modules>
   </component>
 </project>

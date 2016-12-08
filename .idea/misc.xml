@@ -4,7 +4,7 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/study-test-web2" />
+    <file type="web" url="file://$PROJECT_DIR$/study-test1-web" />
     <file type="web" url="file://$PROJECT_DIR$/study-test1-web" />
   </component>
   <component name="MavenProjectsManager">
