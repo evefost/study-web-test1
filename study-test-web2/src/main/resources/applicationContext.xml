@@ -15,5 +15,5 @@
         <import resource="classpath*:/spring/applicationContext-scheduler.xml"/>
         <import resource="classpath*:/spring/spring-redis.xml"/>-->
     <!--<import resource="classpath*:/spring/spring-tx.xml"/>-->
-    <import resource="classpath*:spring/spring-*.xml"/>
+    <!--<import resource="classpath*:spring/spring-*.xml"/>-->
 </beans>

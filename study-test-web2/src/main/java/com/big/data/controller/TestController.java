@@ -1,5 +1,6 @@
 package com.big.data.controller;
 
+import com.big.data.constant.AppConfig;
 import com.big.data.entity.TestBean;
 import com.big.data.service.TestService;
 import org.slf4j.Logger;
@@ -19,6 +20,9 @@ public class TestController {
     @Autowired
     private TestService testService;
 
+    @Autowired
+    private AppConfig config;
+
     @RequestMapping(value = "serviceVersion", method = RequestMethod.GET)
     @ResponseBody
     public String getVersion() {
@@ -29,12 +33,18 @@ public class TestController {
         return testService.getVersion();
     }
 
-    @RequestMapping(value = "getNameById", method = RequestMethod.GET)
+    @RequestMapping(value = "quetyEnviroment", method = RequestMethod.GET)
     @ResponseBody
-    public String getNameById(Integer id) {
-        logger.info("id:" + id);
-        TestBean nameById = testService.getNameById(id);
-        logger.info("name::" + nameById.getName());
-        return nameById.getName();
+    public String quetyEnviroment() {
+
+        String enviroment = testService.getEnviroment();
+        logger.info("quetyEnviroment::" + enviroment);
+        return enviroment;
+    }
+
+    @RequestMapping(value = "queryPackageEnviroment", method = RequestMethod.GET)
+    @ResponseBody
+    public String queryCurrentEnviroment() {
+        return config.getPackageEnviroment();
     }
 }

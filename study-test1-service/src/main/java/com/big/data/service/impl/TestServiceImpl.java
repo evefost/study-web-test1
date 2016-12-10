@@ -31,4 +31,9 @@ public class TestServiceImpl implements TestService {
         return testDao.getNameById(id);
         //return  null;
     }
+
+    public String getEnviroment() {
+        TestBean t =  testDao.getNameById(1);
+        return  t.getName();
+    }
 }

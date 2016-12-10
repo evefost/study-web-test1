@@ -9,21 +9,19 @@
     <version>${project.version}</version>
     <artifactId>study-test1-web2</artifactId>
     <packaging>war</packaging>
-    <name>study-test1-web2 Maven Webapp</name>
+    <name>study-test1-web2</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>
+
         <dependency>
             <groupId>com.big.data</groupId>
             <artifactId>study-test1-service</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.big.data</groupId>
-            <artifactId>big.data.im.service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
+
         <!--spring mvc 依懒-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -34,6 +32,18 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework.version}</version>
+        </dependency>
+        <!--im config -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.6.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.0.0</version>
         </dependency>
 
     </dependencies>

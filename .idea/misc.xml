@@ -16,6 +16,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/study-test1-web/pom.xml" />
+        <option value="$PROJECT_DIR$/study_im_service/pom.xml" />
       </set>
     </option>
   </component>

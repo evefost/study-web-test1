@@ -47,7 +47,7 @@
     在ContextLoaderListener中关联了ContextLoader这个类，所以整个加载配置过程由ContextLoader来完成。-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/applicationContext.xml</param-value>
+        <param-value>classpath*:applicationContext.xml</param-value>
     </context-param>
 
     <!--如果你的DispatcherServlet拦截"/"，为了实现REST风格，拦截了所有的请求，那么同时对*.js,*.jpg等静态文件的访问也就被拦截了。-->
@@ -107,7 +107,7 @@
             <!--2、<param-value>/WEB-INF/classes/dispatcher-servlet.xml</param-value>-->
             <!--3、<param-value>classpath*:dispatcher-servlet.xml</param-value>-->
             <!--4、多个值用逗号分隔-->
-            <param-value>classpath:spring/spring-mvc.xml</param-value>
+            <param-value>classpath:spring-mvc.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup><!--是启动顺序，让这个Servlet随Servletp容器一起启动。-->
     </servlet>
@@ -138,7 +138,7 @@
     <!-- log4j -->
     <context-param>
         <param-name>log4jConfigLocation</param-name>
-        <param-value>classpath:log4j2.xml</param-value>
+        <param-value>classpath:log4j.xml</param-value>
     </context-param>
     <context-param>
         <param-name>log4jRefreshInterval</param-name>

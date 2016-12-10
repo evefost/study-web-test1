@@ -24,7 +24,6 @@
         <processorPath useClasspath="true" />
         <module name="study-test1-api" />
         <module name="study-test1-service" />
-        <module name="study_im_service" />
       </profile>
       <profile default="false" name="Annotation profile for study-test-web2" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />

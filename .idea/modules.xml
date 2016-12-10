@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/study-test1.iml" filepath="$PROJECT_DIR$/study-test1.iml" />
       <module fileurl="file://$PROJECT_DIR$/study-test1-api/study-test1-api.iml" filepath="$PROJECT_DIR$/study-test1-api/study-test1-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/study-test1-service/study-test1-service.iml" filepath="$PROJECT_DIR$/study-test1-service/study-test1-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/study_im_service/study_im_service.iml" filepath="$PROJECT_DIR$/study_im_service/study_im_service.iml" />
     </modules>
   </component>
 </project>
