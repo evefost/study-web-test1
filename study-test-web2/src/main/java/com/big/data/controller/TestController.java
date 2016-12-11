@@ -1,7 +1,6 @@
 package com.big.data.controller;
 
 import com.big.data.constant.AppConfig;
-import com.big.data.entity.TestBean;
 import com.big.data.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +44,9 @@ public class TestController {
     @RequestMapping(value = "queryPackageEnviroment", method = RequestMethod.GET)
     @ResponseBody
     public String queryCurrentEnviroment() {
+
+        logger.info("evn:{}", config.getPackageEnviroment());
+        logger.error("env error{}", config.getPackageEnviroment());
         return config.getPackageEnviroment();
     }
 }

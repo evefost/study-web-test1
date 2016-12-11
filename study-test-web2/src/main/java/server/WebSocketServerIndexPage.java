@@ -26,6 +26,10 @@ public final class WebSocketServerIndexPage {
 
     private static final String NEWLINE = "\r\n";
 
+    private WebSocketServerIndexPage() {
+        // Unused
+    }
+
     public static ByteBuf getContent(String webSocketLocation) {
         return Unpooled.copiedBuffer(
                 "<html><head><title>Web Socket Test</title></head>" + NEWLINE +
@@ -71,9 +75,5 @@ public final class WebSocketServerIndexPage {
                         "</form>" + NEWLINE +
                         "</body>" + NEWLINE +
                         "</html>" + NEWLINE, CharsetUtil.US_ASCII);
-    }
-
-    private WebSocketServerIndexPage() {
-        // Unused
     }
 }

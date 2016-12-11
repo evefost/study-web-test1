@@ -26,6 +26,10 @@ public final class WebSocketServerBenchmarkPage {
 
     private static final String NEWLINE = "\r\n";
 
+    private WebSocketServerBenchmarkPage() {
+        // Unused
+    }
+
     public static ByteBuf getContent(String webSocketLocation) {
         return Unpooled.copiedBuffer(
                 "<html><head><title>Web Socket Performance Test</title></head>" + NEWLINE +
@@ -183,9 +187,5 @@ public final class WebSocketServerBenchmarkPage {
                         "</script>" + NEWLINE +
                         "</body>" + NEWLINE +
                         "</html>" + NEWLINE, CharsetUtil.US_ASCII);
-    }
-
-    private WebSocketServerBenchmarkPage() {
-        // Unused
     }
 }
