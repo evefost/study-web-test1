@@ -1,5 +1,6 @@
 package com.big.data.service.impl;
 
+import com.big.data.constant.AppConfig;
 import com.big.data.dao.TestMapper;
 import com.big.data.entity.TestBean;
 import com.big.data.service.TestService;
@@ -17,7 +18,8 @@ public class TestServiceImpl implements TestService {
 
     @Autowired
     private TestMapper testDao;
-
+    @Autowired
+    private AppConfig appConfig;
 
     public String getVersion() {
         logger.debug("sdebug");
@@ -29,11 +31,12 @@ public class TestServiceImpl implements TestService {
 
     public TestBean getNameById(Integer id) {
         return testDao.getNameById(id);
-        //return  null;
+
     }
 
     public String getEnviroment() {
         TestBean t =  testDao.getNameById(1);
-        return  t.getName();
+        String env = appConfig.getPackageEnviroment() + "==" + t.getName();
+        return env;
     }
 }

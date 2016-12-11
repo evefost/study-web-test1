@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="war" name="study-test-web2:war">
     <output-path>$PROJECT_DIR$/study-test-web2/target</output-path>
-    <root id="archive" name="study－web-dev-debug.war">
+    <root id="archive" name="study－web-prd-debug.war">
       <element id="artifact" artifact-name="study-test-web2:war exploded" />
     </root>
   </artifact>

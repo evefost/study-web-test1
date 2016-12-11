@@ -135,18 +135,5 @@
     <session-config><!--会话超时配置，单位分钟-->
         <session-timeout>360</session-timeout>
     </session-config>
-    <!-- log4j -->
-    <context-param>
-        <param-name>log4jConfigLocation</param-name>
-        <param-value>classpath:log4j.xml</param-value>
-    </context-param>
-    <context-param>
-        <param-name>log4jRefreshInterval</param-name>
-        <param-value>3000</param-value>
-    </context-param>
-    <!-- 先开启Log4J,再去启动spring等一些你需要的东西，有助于报错时日志的输出 -->
-    <listener>
-        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
 </web-app>
 
