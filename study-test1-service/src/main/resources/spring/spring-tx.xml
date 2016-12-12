@@ -13,8 +13,15 @@
 	<context:component-scan base-package="com.big.data.service.*"/>
 	<context:component-scan base-package="com.big.data.dao.*"/>
 
-	<bean id="testHandler" class="com.big.data.socket.server.WebSocketServer"
+	<!--<bean id="testHandler" class="com.big.data.socket.server.WebSocketServer"-->
+	<!--init-method="start">-->
+
+	<!--</bean>-->
+	<bean id="testHandler" class="com.im.server.core.IMServer"
 		  init-method="start">
+		<property name="port" value="7777"></property>
 
 	</bean>
+
+
 </beans>

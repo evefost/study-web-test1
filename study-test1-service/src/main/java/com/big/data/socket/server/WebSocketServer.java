@@ -15,7 +15,6 @@
  */
 package com.big.data.socket.server;
 
-import com.big.data.constant.AppConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -24,20 +23,18 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * A HTTP server which serves Web Socket requests at:
- * <p>
+ *
  * http://localhost:8080/websocket
- * <p>
+ *
  * Open your browser at http://localhost:8080/, then the demo page will be loaded and a Web Socket connection will be
  * made automatically.
- * <p>
+ *
  * This server illustrates support for the different web socket specification versions and will work with:
- * <p>
+ *
  * <ul>
  * <li>Safari 5+ (draft-ietf-hybi-thewebsocketprotocol-00)
  * <li>Chrome 6-13 (draft-ietf-hybi-thewebsocketprotocol-00)
@@ -50,31 +47,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public final class WebSocketServer {
 
     static final boolean SSL = System.getProperty("ssl") != null;
-    static final int PORT = Integer.parseInt(System.getProperty("port", SSL ? "8443" : "7777"));
+    static final int PORT = Integer.parseInt(System.getProperty("port", SSL ? "8443" : "8080"));
 
-    @Autowired
-    AppConfig appConfig;
-
-
-    public void start() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    main(null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    public void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         // Configure SSL.
         final SslContext sslCtx;
         if (SSL) {
             SelfSignedCertificate ssc = new SelfSignedCertificate();
-            sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey()).build();
+            sslCtx = SslContext.newServerContext(ssc.certificate(), ssc.privateKey());
         } else {
             sslCtx = null;
         }
@@ -88,15 +68,27 @@ public final class WebSocketServer {
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new WebSocketServerInitializer(sslCtx));
 
-            Channel ch = b.bind(appConfig.getSocketPort()).sync().channel();
+            Channel ch = b.bind(7777).sync().channel();
 
             System.out.println("Open your web browser and navigate to " +
-                    (SSL ? "https" : "http") + "://127.0.0.1:" + appConfig.getSocketPort() + '/');
+                    (SSL ? "https" : "http") + "://127.0.0.1:" + PORT + '/');
 
             ch.closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
+    }
+
+    public void start() {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    main(null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
