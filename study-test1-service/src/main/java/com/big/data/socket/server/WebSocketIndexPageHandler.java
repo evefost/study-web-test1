@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package server;
+package com.big.data.socket.server;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -21,6 +21,8 @@ import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.util.CharsetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
@@ -30,7 +32,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  * Outputs index page content.
  */
 public class WebSocketIndexPageHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketFrameHandler.class);
     private final String websocketPath;
 
     public WebSocketIndexPageHandler(String websocketPath) {
@@ -64,6 +66,7 @@ public class WebSocketIndexPageHandler extends SimpleChannelInboundHandler<FullH
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest req) throws Exception {
+        logger.info("receiver fullhttpRequest:" + req.toString());
         // Handle a bad request.
         if (!req.decoderResult().isSuccess()) {
             sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST));
@@ -93,6 +96,7 @@ public class WebSocketIndexPageHandler extends SimpleChannelInboundHandler<FullH
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        logger.error("exceptionCaught:" + cause.getMessage());
         cause.printStackTrace();
         ctx.close();
     }

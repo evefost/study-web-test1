@@ -19,7 +19,8 @@
         </layout>
     </appender>
 
-    <logger name="com.big.data.service" additivity="false">
+
+    <logger name="com.big.data" additivity="false">
         <level value="debug"/>
         <appender-ref ref="console"/>
         <appender-ref ref="testAppender"/>

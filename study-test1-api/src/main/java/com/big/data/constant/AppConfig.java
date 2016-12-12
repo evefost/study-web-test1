@@ -10,6 +10,14 @@ public class AppConfig {
     @Value("${package_enviroment}")
     private String packageEnviroment;
 
+    @Value("${socket.port}")
+    private int socketPort;
+
+    public int getSocketPort() {
+        return socketPort;
+    }
+
+
     public String getPackageEnviroment() {
         return packageEnviroment;
     }

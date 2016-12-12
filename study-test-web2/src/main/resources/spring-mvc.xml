@@ -17,4 +17,5 @@
     <import resource="classpath*:spring/*.xml"/>
     <bean id="config" class="com.big.data.constant.AppConfig"/>
 
+
 </beans>

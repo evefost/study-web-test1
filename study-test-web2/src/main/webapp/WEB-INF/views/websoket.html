@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+</head>
+<script type="text/javascript">
+    var socket;
+
+    if (!window.WebSocket) {
+        window.WebSocket = window.MozWebSocket;
+    }
+
+    if (window.WebSocket) {
+        socket = new WebSocket("ws://localhost:9999");
+
+        socket.onmessage = function (event) {
+            appendln("接收:" + event.data);
+        };
+
+        socket.onopen = function (event) {
+            appendln("WebSocket 连接已建立");
+
+        };
+
+        socket.onclose = function (event) {
+            appendln("WebSocket 连接已关闭");
+        };
+    } else {
+        alert("浏览器不支持WebSocket协议");
+    }
+
+    function send(message) {
+        if (!window.WebSocket) {
+            return;
+        }
+        if (socket.readyState == WebSocket.OPEN) {
+            socket.send(message);
+            appendln("发送:" + message);
+        } else {
+            alert("WebSocket连接建立失败");
+        }
+
+    }
+
+    function appendln(text) {
+        var ta = document.getElementById('responseText');
+        ta.value += text + "\r\n";
+    }
+
+    function clear() {
+        var ta = document.getElementById('responseText');
+        ta.value = "";
+    }
+
+</script>
+<body>
+<form onSubmit="return false;">
+    <input type="text" name="message" value="你好啊"/>
+    <br/><br/>
+    <input type="button" value="发送 WebSocket 请求消息" onClick="send(this.form.message.value)"/>
+    <hr/>
+    <h3>服务端返回的应答消息</h3>
+    <textarea id="responseText" style="width: 800px;height: 300px;"></textarea>
+</form>
+</body>
+</html>

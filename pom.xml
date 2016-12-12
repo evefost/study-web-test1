@@ -95,6 +95,7 @@
         </profile>
         <profile>
             <id>dev_release</id>
+
             <properties>
                 <package.environment>env/dev</package.environment>
                 <package.mode>env/release</package.mode>

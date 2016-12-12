@@ -20,30 +20,6 @@
 	</appender>
 
 
-	<!--<logger name="org.springframework.samples">-->
-	<!--<level value="debug" />-->
-	<!--</logger>-->
-	<!---->
-	<!--<logger name="org.springframework.core">-->
-	<!--<level value="info" />-->
-	<!--</logger>-->
-	<!---->
-	<!--<logger name="org.springframework.beans">-->
-	<!--<level value="info" />-->
-	<!--</logger>-->
-	<!---->
-	<!--<logger name="org.springframework.context">-->
-	<!--<level value="info" />-->
-	<!--</logger>-->
-
-	<!--<logger name="org.springframework.http">-->
-	<!--<level value="debug" />-->
-	<!--</logger>-->
-
-	<!--<logger name="org.springframework.web">-->
-	<!--<level value="debug" />-->
-	<!--</logger>-->
-
 	<logger name="com.big.data.service" additivity="false">
 		<level value="debug"/>
 		<appender-ref ref="console"/>
