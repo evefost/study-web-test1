@@ -24,17 +24,20 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * A HTTP server which serves Web Socket requests at:
- *
+ * <p>
  * http://localhost:8080/websocket
- *
+ * <p>
  * Open your browser at http://localhost:8080/, then the demo page will be loaded and a Web Socket connection will be
  * made automatically.
- *
+ * <p>
  * This server illustrates support for the different web socket specification versions and will work with:
- *
+ * <p>
  * <ul>
  * <li>Safari 5+ (draft-ietf-hybi-thewebsocketprotocol-00)
  * <li>Chrome 6-13 (draft-ietf-hybi-thewebsocketprotocol-00)
@@ -45,11 +48,36 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
  * </ul>
  */
 public final class WebSocketServer {
-
     static final boolean SSL = System.getProperty("ssl") != null;
     static final int PORT = Integer.parseInt(System.getProperty("port", SSL ? "8443" : "8080"));
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
+    @Value("${websocket.port}")
+    private int port;
 
-    public static void main(String[] args) throws Exception {
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void start() {
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    main(null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void main(String[] args) throws Exception {
         // Configure SSL.
         final SslContext sslCtx;
         if (SSL) {
@@ -68,10 +96,10 @@ public final class WebSocketServer {
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new WebSocketServerInitializer(sslCtx));
 
-            Channel ch = b.bind(7777).sync().channel();
+            Channel ch = b.bind(port).sync().channel();
 
-            System.out.println("Open your web browser and navigate to " +
-                    (SSL ? "https" : "http") + "://127.0.0.1:" + PORT + '/');
+            logger.info("Open your web browser and navigate to " +
+                    (SSL ? "https" : "http") + "://127.0.0.1:" + port + '/');
 
             ch.closeFuture().sync();
         } finally {
@@ -80,15 +108,4 @@ public final class WebSocketServer {
         }
     }
 
-    public void start() {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    main(null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
 }

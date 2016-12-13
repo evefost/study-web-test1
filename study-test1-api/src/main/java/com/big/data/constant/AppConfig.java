@@ -5,17 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 /**
  * Created by xieyang on 16/12/11.
  */
-public class AppConfig {
+public final class AppConfig {
 
     @Value("${package_enviroment}")
     private String packageEnviroment;
-
-    @Value("${socket.port}")
-    private int socketPort;
-
-    public int getSocketPort() {
-        return socketPort;
-    }
 
 
     public String getPackageEnviroment() {

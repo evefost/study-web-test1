@@ -7,7 +7,7 @@
         window.WebSocket = window.MozWebSocket;
     }
     if (window.WebSocket) {
-        socket = new WebSocket("ws://127.0.0.1:7777/websocket");
+        socket = new WebSocket("ws://127.0.0.1:8888/websocket");
         socket.onmessage = function (event) {
             var ta = document.getElementById('responseText');
             ta.value = ta.value + '\n' + event.data

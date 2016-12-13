@@ -25,6 +25,11 @@
         <appender-ref ref="console"/>
         <appender-ref ref="testAppender"/>
     </logger>
+    <logger name="com.im" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="testAppender"/>
+    </logger>
 
     <root>
         <priority value="error"/>

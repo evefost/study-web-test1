@@ -27,6 +27,8 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderUtil;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaderNames.HOST;
@@ -39,6 +41,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  */
 public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> {
 
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketServerHandler.class);
     private static final String WEBSOCKET_PATH = "/websocket";
 
     private WebSocketServerHandshaker handshaker;
@@ -72,8 +75,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, Object msg) {
         if (msg instanceof FullHttpRequest) {
+            logger.debug("http 消息");
             handleHttpRequest(ctx, (FullHttpRequest) msg);
         } else if (msg instanceof WebSocketFrame) {
+            logger.debug("websocket 消息");
             handleWebSocketFrame(ctx, (WebSocketFrame) msg);
         }
     }
@@ -142,7 +147,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
         // Send the uppercase string back.
         String request = ((TextWebSocketFrame) frame).text();
-        System.err.printf("%s received %s%n", ctx.channel(), request);
+        logger.info("%s received %s%n", ctx.channel(), request);
         ctx.channel().write(new TextWebSocketFrame(request.toUpperCase()));
     }
 

@@ -1,8 +1,7 @@
 package com.im.protocol.handler;
 
+
 import com.im.sdk.protocol.Message;
-import com.im.sdk.protocol.Message.Data;
-import com.im.sdk.protocol.Message.Data.Cmd;
 import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
 import com.im.server.util.SessionUtils;
@@ -16,7 +15,7 @@ import io.netty.channel.ChannelHandlerContext;
 public class LogoutHandler extends ProtocolHandler {
 
     @Override
-    public void handleRequest(ChannelHandlerContext ctx, Data data) {
+    public void handleRequest(ChannelHandlerContext ctx, Message.Data data) {
 
         try {
             IMSession ios = getSessionManager().getSession(data.getSenderId());
@@ -34,7 +33,7 @@ public class LogoutHandler extends ProtocolHandler {
 
     @Override
     public int getCmd() {
-        return Cmd.LOGOUT_VALUE;
+        return Message.Data.Cmd.LOGOUT_VALUE;
     }
 
 }

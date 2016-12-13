@@ -15,7 +15,6 @@ package com.im.server.core;
  * under the License.
  */
 
-import com.big.data.socket.server.WebSocketServerHandler;
 import com.im.sdk.protocol.Message;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -24,18 +23,24 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.HashMap;
+import java.util.Map;
 
 //import com.im.sdk.protocol.ProtobufDecoder;
 //import com.im.sdk.protocol.ProtobufEncoder;
 
 public final class IMServer {
+    private static final Logger logger = LoggerFactory.getLogger(IMServer.class);
 
+    public static Map<String, SocketChannel> ches = new HashMap<String, SocketChannel>();
 
+    @Value("${socket.port}")
     private int port;
 
     public void start() {
@@ -44,11 +49,8 @@ public final class IMServer {
 
             @Override
             public void run() {
-                System.out.println("=====================>");
-                System.out.println("=====================>");
-                System.out.println("=====================>");
-                System.out.println("=====================>");
-                System.out.println("ServerBootstrap 启动");
+                logger.info("=====================>");
+                logger.info("ServerBootstrap 启动");
                 EventLoopGroup bossGroup = new NioEventLoopGroup();
                 EventLoopGroup workerGroup = new NioEventLoopGroup();
                 try {
@@ -60,15 +62,14 @@ public final class IMServer {
                     bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            System.out.println("新连接=======remoteAddress>" + ch.remoteAddress());
-                            ChannelPipeline p = ch.pipeline();
-                            p.addLast(new ProtobufDecoder(Message.Data.getDefaultInstance()));
-                            p.addLast(new ProtobufEncoder());
-                            p.addLast(new IMChannelHandler());
-                            p.addLast(new HttpServerCodec());
-                            p.addLast(new HttpObjectAggregator(65536));
-                            p.addLast(new WebSocketServerCompressionHandler());
-                            p.addLast(new WebSocketServerHandler());
+
+                            logger.debug("新连接=======id>" + ch.id());
+                            //ches.put(ch.id().asLongText(),ch);
+                            ChannelPipeline pipeline = ch.pipeline();
+                            pipeline.addLast(new ProtobufDecoder(Message.Data.getDefaultInstance()));
+                            pipeline.addLast(new ProtobufEncoder());
+                            pipeline.addLast(new IMChannelHandler());
+
                         }
                     });
 
@@ -76,7 +77,7 @@ public final class IMServer {
                     System.out.println("绑定成功:");
                 } catch (Exception e) {
                     e.printStackTrace();
-                    System.out.println("绑定异常bindEx:" + e.toString());
+                    logger.error("绑定异常bindEx:" + e.toString());
                 } finally {
                     workerGroup.shutdownGracefully();
                     bossGroup.shutdownGracefully();

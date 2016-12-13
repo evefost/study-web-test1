@@ -33,12 +33,11 @@
         <module name="study-test-web2" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="study-test-web2" target="1.7" />
       <module name="study-test1" target="1.5" />
       <module name="study-test1-api" target="1.5" />
       <module name="study-test1-service" target="1.5" />
-      <module name="study_im_service" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -20,15 +20,22 @@ import com.im.sdk.protocol.Message.Data;
 import com.im.sdk.protocol.Message.Data.Cmd;
 import com.im.server.util.ProtocolHandllerLoader;
 import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Handler implementation for the echo server.
  */
 @Sharable
-public class IMChannelHandler extends ChannelHandlerAdapter {
-
+public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> {
+    private static final Logger logger = LoggerFactory.getLogger(IMChannelHandler.class);
     /**
      * Creates a client-side handler.
      */
@@ -37,43 +44,47 @@ public class IMChannelHandler extends ChannelHandlerAdapter {
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) {
-
-        System.out.println("channelActive 已连上服务器 发送聊天服务地址给客户端 :" + ctx.channel().remoteAddress());
-        System.out.println("channelId :" + ctx.channel().id());
-
-    }
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-
-        Message.Data data = (Data) msg;
+    protected void messageReceived(ChannelHandlerContext ctx, Data data) throws Exception {
         showMessageInfoLog(ctx, data);
         ProtocolHandler handler = ProtocolHandllerLoader.getProtocolHandler(data.getCmd());
-        System.out.println("channelRead handler :" + handler);
+        logger.info("messageReceived content :" + data.getContent());
+        Set<Map.Entry<String, SocketChannel>> entries = IMServer.ches.entrySet();
+        for (Map.Entry<String, SocketChannel> entry : entries) {
+            entry.getValue().write(new TextWebSocketFrame(data.getContent()));
+            entry.getValue().flush();
+        }
         if (handler != null) {
             handler.handleRequest(ctx, data);
         }
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+
+        logger.debug("channelActive 已连上服务器 发送聊天服务地址给客户端 :" + ctx.channel().remoteAddress());
+        logger.debug("channelId :" + ctx.channel().id());
 
     }
+
+
 
     private void showMessageInfoLog(ChannelHandlerContext ctx, Message.Data data) {
         switch (data.getCmd()) {
             case Cmd.LOGIN_VALUE:
-                System.out.println("channelRead 登录消息 :" + ctx.channel().remoteAddress());
+                logger.debug("channelRead 登录消息 :" + ctx.channel().remoteAddress());
                 break;
             case Cmd.LOGOUT_VALUE:
-                System.out.println("channelRead 登出消息 :" + ctx.channel().remoteAddress());
+                logger.debug("channelRead 登出消息 :" + ctx.channel().remoteAddress());
                 break;
             case Cmd.CHAT_TXT_VALUE:
-                // System.out.println("channelRead
+                // logger.info("channelRead
                 // 普通消息:"+data.getContent()+"==time:"+data.getCreateTime());
                 break;
             case Cmd.HEARTBEAT_VALUE:
-                System.out.println("channelRead  心跳消息:");
+                logger.debug("channelRead  心跳消息:");
                 break;
             case Cmd.BIND_CLIENT_VALUE:
-                System.out.println("channelRead  绑定clientId:" + data.getClientId());
+                logger.debug("channelRead  绑定clientId:" + data.getClientId());
                 break;
             default:
                 break;
@@ -96,12 +107,12 @@ public class IMChannelHandler extends ChannelHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        System.out.println("exceptionCaught 异常关闭");
+        logger.warn("exceptionCaught 异常关闭");
         cause.printStackTrace();
         ctx.close();
     }
 
     public void channelInactive(ChannelHandlerContext ctx) {
-        System.out.println("channelInactive 客户端断开:" + ctx.channel().remoteAddress());
+        logger.debug("channelInactive 客户端断开:" + ctx.channel().remoteAddress());
     }
 }

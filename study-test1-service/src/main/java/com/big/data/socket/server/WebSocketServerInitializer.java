@@ -15,6 +15,7 @@
  */
 package com.big.data.socket.server;
 
+import com.im.server.core.IMServer;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -22,11 +23,13 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.ssl.SslContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  */
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
-
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketServerInitializer.class);
     private final SslContext sslCtx;
 
     public WebSocketServerInitializer(SslContext sslCtx) {
@@ -35,7 +38,10 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
 
     @Override
     public void initChannel(SocketChannel ch) throws Exception {
+
         ChannelPipeline pipeline = ch.pipeline();
+        logger.debug("新websocket接入 id:" + ch.id());
+        IMServer.ches.put(ch.id().asLongText(), ch);
         if (sslCtx != null) {
             pipeline.addLast(sslCtx.newHandler(ch.alloc()));
         }

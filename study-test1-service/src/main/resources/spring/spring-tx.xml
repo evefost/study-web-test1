@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns="http://www.springframework.org/schema/beans"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
          http://www.springframework.org/schema/context
          http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
-	<!-- 打开Spring的Annotation支持 -->
-	<context:annotation-config />
+    <!-- 打开Spring的Annotation支持 -->
+    <context:annotation-config/>
     <!-- 扫描 service -->
-	<context:component-scan base-package="com.big.data.service.*"/>
-	<context:component-scan base-package="com.big.data.dao.*"/>
+    <context:component-scan base-package="com.big.data.service.*"/>
+    <context:component-scan base-package="com.big.data.dao.*"/>
 
-	<!--<bean id="testHandler" class="com.big.data.socket.server.WebSocketServer"-->
-	<!--init-method="start">-->
-
-	<!--</bean>-->
-	<bean id="testHandler" class="com.im.server.core.IMServer"
-		  init-method="start">
-		<property name="port" value="7777"></property>
-
-	</bean>
+    <bean id="webSocketServer" class="com.big.data.socket.server.WebSocketServer"
+          init-method="start">
+    </bean>
+    <bean id="imServer" class="com.im.server.core.IMServer"
+          init-method="start">
+    </bean>
 
 
 </beans>
