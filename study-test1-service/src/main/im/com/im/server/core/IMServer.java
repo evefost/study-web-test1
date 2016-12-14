@@ -15,6 +15,7 @@ package com.im.server.core;
  * under the License.
  */
 
+import com.big.data.service.MessageService;
 import com.im.sdk.protocol.Message;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -27,13 +28,12 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 import java.util.Map;
 
-//import com.im.sdk.protocol.ProtobufDecoder;
-//import com.im.sdk.protocol.ProtobufEncoder;
 
 public final class IMServer {
     private static final Logger logger = LoggerFactory.getLogger(IMServer.class);
@@ -42,6 +42,8 @@ public final class IMServer {
 
     @Value("${socket.port}")
     private int port;
+    @Autowired
+    MessageService messageService;
 
     public void start() {
 

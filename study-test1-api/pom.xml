@@ -9,6 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <version>${project.version}</version>
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+    </dependencies>
     <artifactId>study-test1-api</artifactId>
 
 

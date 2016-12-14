@@ -3,6 +3,7 @@ package com.big.data.service.impl;
 import com.big.data.constant.AppConfig;
 import com.big.data.dao.TestMapper;
 import com.big.data.entity.TestBean;
+import com.big.data.service.MessageService;
 import com.big.data.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,9 @@ public class TestServiceImpl implements TestService {
     private TestMapper testDao;
     @Autowired
     private AppConfig appConfig;
+
+    @Autowired
+    private MessageService messageService;
 
     public String getVersion() {
         logger.debug("sdebug");

@@ -13,8 +13,11 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.big.data.socket.server;
+package com.im.server.web;
 
+import com.big.data.constant.AppConfig;
+import com.big.data.service.MessageService;
+import com.big.data.service.TestService;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -29,6 +32,7 @@ import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaderNames.HOST;
@@ -43,6 +47,9 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServerHandler.class);
     private static final String WEBSOCKET_PATH = "/websocket";
+
+    @Autowired
+    private MessageService messageService;
 
     private WebSocketServerHandshaker handshaker;
 
@@ -147,7 +154,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
         // Send the uppercase string back.
         String request = ((TextWebSocketFrame) frame).text();
-        logger.info("%s received %s%n", ctx.channel(), request);
+        logger.info("received{}--{}", ctx.channel(), request);
+        if(messageService != null){
+            messageService.dispatcherMessage(ctx,frame);
+        }
         ctx.channel().write(new TextWebSocketFrame(request.toUpperCase()));
     }
 

@@ -12,10 +12,13 @@
     <!-- 扫描 service -->
     <context:component-scan base-package="com.big.data.service.*"/>
     <context:component-scan base-package="com.big.data.dao.*"/>
+    <!--<context:component-scan base-package="com.im.server/>-->
 
-    <bean id="webSocketServer" class="com.big.data.socket.server.WebSocketServer"
-          init-method="start">
+
+    <bean id="webSocketServer" class="com.im.server.web.WebSocketServer"
+    init-method="start" >
     </bean>
+
     <bean id="imServer" class="com.im.server.core.IMServer"
           init-method="start">
     </bean>

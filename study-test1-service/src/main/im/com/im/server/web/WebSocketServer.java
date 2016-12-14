@@ -13,8 +13,9 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.big.data.socket.server;
+package com.im.server.web;
 
+import com.big.data.service.MessageService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -26,6 +27,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
@@ -47,13 +49,14 @@ import org.springframework.beans.factory.annotation.Value;
  * <li>Firefox 11+ (RFC 6455 aka draft-ietf-hybi-thewebsocketprotocol-17)
  * </ul>
  */
-public final class WebSocketServer {
+public  class WebSocketServer {
     static final boolean SSL = System.getProperty("ssl") != null;
     static final int PORT = Integer.parseInt(System.getProperty("port", SSL ? "8443" : "8080"));
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     @Value("${websocket.port}")
     private int port;
-
+    @Autowired
+    private MessageService messageService;
     public int getPort() {
         return port;
     }

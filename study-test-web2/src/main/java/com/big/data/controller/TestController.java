@@ -1,5 +1,6 @@
 package com.big.data.controller;
 
+import com.big.data.service.MessageService;
 import com.big.data.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,8 @@ public class TestController {
 
     @Autowired
     private TestService testService;
-
+    @Autowired
+    MessageService messageService;
 
     @RequestMapping(value = "serviceVersion", method = RequestMethod.GET)
     @ResponseBody

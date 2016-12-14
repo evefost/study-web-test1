@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.big.data.socket.server;
+package com.im.server.web;
 
 import com.im.server.core.IMServer;
 import io.netty.channel.ChannelInitializer;

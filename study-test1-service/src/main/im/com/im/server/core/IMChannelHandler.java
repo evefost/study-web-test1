@@ -15,6 +15,8 @@
  */
 package com.im.server.core;
 
+import com.big.data.service.MessageService;
+import com.big.data.service.TestService;
 import com.im.sdk.protocol.Message;
 import com.im.sdk.protocol.Message.Data;
 import com.im.sdk.protocol.Message.Data.Cmd;
@@ -26,6 +28,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +39,10 @@ import java.util.Set;
 @Sharable
 public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> {
     private static final Logger logger = LoggerFactory.getLogger(IMChannelHandler.class);
+
+    @Autowired
+    MessageService messageService;
+
     /**
      * Creates a client-side handler.
      */
@@ -45,6 +52,7 @@ public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> 
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Data data) throws Exception {
+        messageService.dispatcherMessage(ctx,data);
         showMessageInfoLog(ctx, data);
         ProtocolHandler handler = ProtocolHandllerLoader.getProtocolHandler(data.getCmd());
         logger.info("messageReceived content :" + data.getContent());
