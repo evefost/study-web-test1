@@ -15,9 +15,7 @@
  */
 package com.im.server.web;
 
-import com.big.data.constant.AppConfig;
 import com.big.data.service.MessageService;
-import com.big.data.service.TestService;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -50,10 +48,22 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
     @Autowired
     private MessageService messageService;
-
     private WebSocketServerHandshaker handshaker;
 
-    private  void sendHttpResponse(
+    public WebSocketServerHandler(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    private static String getWebSocketLocation(FullHttpRequest req) {
+        String location = req.headers().get(HOST) + WEBSOCKET_PATH;
+        if (WebSocketServer.SSL) {
+            return "wss://" + location;
+        } else {
+            return "ws://" + location;
+        }
+    }
+
+    private void sendHttpResponse(
             ChannelHandlerContext ctx, FullHttpRequest req, FullHttpResponse res) {
         // Generate an error page if response getStatus code is not OK (200).
         if (res.status().code() != 200) {
@@ -67,15 +77,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         ChannelFuture f = ctx.channel().writeAndFlush(res);
         if (!HttpHeaderUtil.isKeepAlive(req) || res.status().code() != 200) {
             f.addListener(ChannelFutureListener.CLOSE);
-        }
-    }
-
-    private static String getWebSocketLocation(FullHttpRequest req) {
-        String location = req.headers().get(HOST) + WEBSOCKET_PATH;
-        if (WebSocketServer.SSL) {
-            return "wss://" + location;
-        } else {
-            return "ws://" + location;
         }
     }
 
@@ -152,13 +153,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
                     .getName()));
         }
 
-        // Send the uppercase string back.
-        String request = ((TextWebSocketFrame) frame).text();
-        logger.info("received{}--{}", ctx.channel(), request);
-        if(messageService != null){
-            messageService.dispatcherMessage(ctx,frame);
-        }
-        ctx.channel().write(new TextWebSocketFrame(request.toUpperCase()));
+        messageService.dispatcherMessage(ctx, frame);
     }
 
     @Override

@@ -18,9 +18,15 @@ package com.im.server.web;
 import com.big.data.service.MessageService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
@@ -32,14 +38,14 @@ import org.springframework.beans.factory.annotation.Value;
 
 /**
  * A HTTP server which serves Web Socket requests at:
- * <p>
+ * <p/>
  * http://localhost:8080/websocket
- * <p>
+ * <p/>
  * Open your browser at http://localhost:8080/, then the demo page will be loaded and a Web Socket connection will be
  * made automatically.
- * <p>
+ * <p/>
  * This server illustrates support for the different web socket specification versions and will work with:
- * <p>
+ * <p/>
  * <ul>
  * <li>Safari 5+ (draft-ietf-hybi-thewebsocketprotocol-00)
  * <li>Chrome 6-13 (draft-ietf-hybi-thewebsocketprotocol-00)
@@ -49,7 +55,7 @@ import org.springframework.beans.factory.annotation.Value;
  * <li>Firefox 11+ (RFC 6455 aka draft-ietf-hybi-thewebsocketprotocol-17)
  * </ul>
  */
-public  class WebSocketServer {
+public class WebSocketServer {
     static final boolean SSL = System.getProperty("ssl") != null;
     static final int PORT = Integer.parseInt(System.getProperty("port", SSL ? "8443" : "8080"));
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
@@ -57,6 +63,7 @@ public  class WebSocketServer {
     private int port;
     @Autowired
     private MessageService messageService;
+
     public int getPort() {
         return port;
     }
@@ -97,7 +104,18 @@ public  class WebSocketServer {
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new WebSocketServerInitializer(sslCtx));
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch) throws Exception {
+                            ChannelPipeline pipeline = ch.pipeline();
+                            logger.debug("新websocket接入 id:" + ch.id());
+                            messageService.addChannel(1, ch);
+                            pipeline.addLast(new HttpServerCodec());
+                            pipeline.addLast(new HttpObjectAggregator(65536));
+                            pipeline.addLast(new WebSocketServerCompressionHandler());
+                            pipeline.addLast(new WebSocketServerHandler(messageService));
+                        }
+                    });
 
             Channel ch = b.bind(port).sync().channel();
 

@@ -31,19 +31,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 public final class IMServer {
     private static final Logger logger = LoggerFactory.getLogger(IMServer.class);
-
-    public static Map<String, SocketChannel> ches = new HashMap<String, SocketChannel>();
-
-    @Value("${socket.port}")
-    private int port;
     @Autowired
     MessageService messageService;
+    @Value("${socket.port}")
+    private int port;
 
     public void start() {
 
@@ -64,14 +58,12 @@ public final class IMServer {
                     bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-
                             logger.debug("新连接=======id>" + ch.id());
-                            //ches.put(ch.id().asLongText(),ch);
+                            messageService.addChannel(0, ch);
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new ProtobufDecoder(Message.Data.getDefaultInstance()));
                             pipeline.addLast(new ProtobufEncoder());
-                            pipeline.addLast(new IMChannelHandler());
-
+                            pipeline.addLast(new IMChannelHandler(messageService));
                         }
                     });
 

@@ -16,22 +16,13 @@
 package com.im.server.core;
 
 import com.big.data.service.MessageService;
-import com.big.data.service.TestService;
 import com.im.sdk.protocol.Message;
 import com.im.sdk.protocol.Message.Data;
-import com.im.sdk.protocol.Message.Data.Cmd;
-import com.im.server.util.ProtocolHandllerLoader;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Handler implementation for the echo server.
@@ -40,30 +31,18 @@ import java.util.Set;
 public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> {
     private static final Logger logger = LoggerFactory.getLogger(IMChannelHandler.class);
 
-    @Autowired
     MessageService messageService;
 
     /**
      * Creates a client-side handler.
      */
-    public IMChannelHandler() {
-
+    public IMChannelHandler(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Data data) throws Exception {
         messageService.dispatcherMessage(ctx,data);
-        showMessageInfoLog(ctx, data);
-        ProtocolHandler handler = ProtocolHandllerLoader.getProtocolHandler(data.getCmd());
-        logger.info("messageReceived content :" + data.getContent());
-        Set<Map.Entry<String, SocketChannel>> entries = IMServer.ches.entrySet();
-        for (Map.Entry<String, SocketChannel> entry : entries) {
-            entry.getValue().write(new TextWebSocketFrame(data.getContent()));
-            entry.getValue().flush();
-        }
-        if (handler != null) {
-            handler.handleRequest(ctx, data);
-        }
     }
 
     @Override
@@ -74,30 +53,6 @@ public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> 
 
     }
 
-
-
-    private void showMessageInfoLog(ChannelHandlerContext ctx, Message.Data data) {
-        switch (data.getCmd()) {
-            case Cmd.LOGIN_VALUE:
-                logger.debug("channelRead 登录消息 :" + ctx.channel().remoteAddress());
-                break;
-            case Cmd.LOGOUT_VALUE:
-                logger.debug("channelRead 登出消息 :" + ctx.channel().remoteAddress());
-                break;
-            case Cmd.CHAT_TXT_VALUE:
-                // logger.info("channelRead
-                // 普通消息:"+data.getContent()+"==time:"+data.getCreateTime());
-                break;
-            case Cmd.HEARTBEAT_VALUE:
-                logger.debug("channelRead  心跳消息:");
-                break;
-            case Cmd.BIND_CLIENT_VALUE:
-                logger.debug("channelRead  绑定clientId:" + data.getClientId());
-                break;
-            default:
-                break;
-        }
-    }
 
     /**
      * 检测到连接空闲事件，发送心跳请求命令
