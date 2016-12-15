@@ -161,4 +161,15 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         cause.printStackTrace();
         ctx.close();
     }
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+
+        logger.debug("channelActive 已连上服务器 发送聊天服务地址给客户端 :" + ctx.channel().remoteAddress());
+        logger.debug("channelId :" + ctx.channel().id());
+
+    }
+
+    public void channelInactive(ChannelHandlerContext ctx) {
+        logger.debug("channelInactive 客户端断开:" + ctx.channel().remoteAddress());
+    }
 }

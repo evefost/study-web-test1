@@ -23,7 +23,6 @@
     } else {
         alert("Your browser does not support Web Socket.");
     }
-
     function send(message) {
         if (!window.WebSocket) {
             return;

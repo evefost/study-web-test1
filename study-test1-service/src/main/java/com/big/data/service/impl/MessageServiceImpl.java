@@ -2,6 +2,7 @@ package com.big.data.service.impl;
 
 import com.big.data.service.MessageService;
 import com.im.sdk.protocol.Message;
+import com.im.server.core.IMSession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -16,12 +17,25 @@ import java.util.*;
 public class MessageServiceImpl  implements MessageService{
     private static final Logger logger = LoggerFactory.getLogger(MessageServiceImpl.class);
 
+    /**
+     * key:clientId;
+     * value:IMSession
+     */
+    private static HashMap<String, IMSession> sessions = new HashMap<String, IMSession>();
+
+    /**
+     * 用户maping
+     * key:uid;
+     * value:clientId
+     */
+    private static HashMap<String, String> loginUsers = new HashMap<String, String>();
+
     private static Map<String, SocketChannel> probufChannels = new HashMap<String, SocketChannel>();
 
     private static Map<String, SocketChannel> webChannels = new HashMap<String, SocketChannel>();
 
 
-    @Override
+
     public void addChannel(int type, SocketChannel channel) {
         if (type == 0) {
             probufChannels.put(channel.id().toString(), channel);
@@ -42,6 +56,7 @@ public class MessageServiceImpl  implements MessageService{
                     TextWebSocketFrame textframe = (TextWebSocketFrame) msg;
                     logger.debug("消息类型[SocketFrame]:" + textframe.text());
                     ctx.channel().write(new TextWebSocketFrame(textframe.text().toUpperCase()));
+                    Json.
                     sendProbuf(textframe.text());
                 } else {
                     logger.warn("消息类型[不支持该类型]");
@@ -50,20 +65,7 @@ public class MessageServiceImpl  implements MessageService{
     }
 
 
-    private void sendWebFrame(Message.Data data) {
-        Set<Map.Entry<String, SocketChannel>> entries = webChannels.entrySet();
-        for (Map.Entry<String, SocketChannel> entry : entries) {
-            entry.getValue().write(new TextWebSocketFrame(data.getContent()));
-            entry.getValue().flush();
-        }
-    }
 
-    private void sendProbuf(String text) {
-        Set<Map.Entry<String, SocketChannel>> entries = probufChannels.entrySet();
-        for (Map.Entry<String, SocketChannel> entry : entries) {
-            sendChatTxtMsg(entry.getValue(), text);
-        }
-    }
 
     private void processProbufMessage(ChannelHandlerContext ctx, Message.Data data) {
         switch (data.getCmd()) {
@@ -85,6 +87,21 @@ public class MessageServiceImpl  implements MessageService{
                 break;
             default:
                 break;
+        }
+    }
+
+    private void sendWebFrame(Message.Data data) {
+        Set<Map.Entry<String, SocketChannel>> entries = webChannels.entrySet();
+        for (Map.Entry<String, SocketChannel> entry : entries) {
+            entry.getValue().write(new TextWebSocketFrame(data.getContent()));
+            entry.getValue().flush();
+        }
+    }
+
+    private void sendProbuf(String text) {
+        Set<Map.Entry<String, SocketChannel>> entries = probufChannels.entrySet();
+        for (Map.Entry<String, SocketChannel> entry : entries) {
+            sendChatTxtMsg(entry.getValue(), text);
         }
     }
 
