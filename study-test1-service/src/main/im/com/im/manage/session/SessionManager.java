@@ -1,7 +1,7 @@
 
 package com.im.manage.session;
 
-import com.im.sdk.protocol.Message.Data;
+import com.im.protocol.Message.Data;
 import com.im.server.core.IMSession;
 
 import java.util.Collection;

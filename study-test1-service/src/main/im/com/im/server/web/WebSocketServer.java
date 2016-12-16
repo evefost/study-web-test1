@@ -16,6 +16,7 @@
 package com.im.server.web;
 
 import com.big.data.service.MessageService;
+import com.big.data.service.impl.SessionManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -63,6 +64,7 @@ public class WebSocketServer {
     private int port;
     @Autowired
     private MessageService messageService;
+
 
     public int getPort() {
         return port;

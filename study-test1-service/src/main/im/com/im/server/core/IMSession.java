@@ -1,10 +1,11 @@
 package com.im.server.core;
 
-import com.im.sdk.protocol.Message.Data;
+import com.im.protocol.Message.Data;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 public class IMSession implements Serializable {
@@ -29,9 +30,8 @@ public class IMSession implements Serializable {
         session.setClientId(data.getClientId());
         session.setClientName(data.getClientName());
         session.setClientVersion(data.getClientVersion());
-        session.setBindTime(System.currentTimeMillis());
+        session.setBindTime(new Date().getTime());
         session.setEncriptKey(UUID.randomUUID().toString().substring(0, 6));
-
         return session;
     }
 

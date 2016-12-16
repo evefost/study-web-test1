@@ -1,7 +1,7 @@
 package com.im.protocol.handler;
 
 
-import com.im.sdk.protocol.Message;
+import com.im.protocol.Message;
 import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
 import com.im.server.util.SessionUtils;

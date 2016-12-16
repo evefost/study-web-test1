@@ -1,6 +1,6 @@
 package com.im.manage.push;
 
-import com.im.sdk.protocol.Message;
+import com.im.protocol.Message;
 
 /**
  * 推送消息接口

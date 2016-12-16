@@ -2,7 +2,7 @@ package com.im.server.core;
 
 import com.im.manage.session.ContextHolder;
 import com.im.manage.session.SessionManager;
-import com.im.sdk.protocol.Message;
+import com.im.protocol.Message;
 import io.netty.channel.ChannelHandlerContext;
 
 /**

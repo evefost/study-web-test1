@@ -1,7 +1,7 @@
 package com.im.manage.push;
 
 import com.im.manage.session.SessionManager;
-import com.im.sdk.protocol.Message;
+import com.im.protocol.Message;
 import com.im.server.core.IMSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +20,6 @@ public class MessagePusher implements IMessagePusher {
         this.sessionManager = sessionManager;
     }
 
-    @Override
     public void pushMessage(Message.Data.Builder msg) {
         IMSession session = sessionManager.getSession(msg.getReceiverId());
 

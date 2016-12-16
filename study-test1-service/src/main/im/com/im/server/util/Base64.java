@@ -2,7 +2,7 @@ package com.im.server.util;
 
 import java.io.ByteArrayOutputStream;
 
-final class Base64 {
+public final class Base64 {
     private static final char[] base64EncodeChars = new char[]{
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
             'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',

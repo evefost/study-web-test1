@@ -1,8 +1,8 @@
 package com.im.protocol.handler;
 
-import com.im.sdk.protocol.Message;
-import com.im.sdk.protocol.Message.Data;
-import com.im.sdk.protocol.Message.Data.Cmd;
+import com.im.protocol.Message;
+import com.im.protocol.Message.Data;
+import com.im.protocol.Message.Data.Cmd;
 import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
 import com.im.server.util.SessionUtils;

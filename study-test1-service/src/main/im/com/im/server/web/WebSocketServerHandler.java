@@ -16,6 +16,7 @@
 package com.im.server.web;
 
 import com.big.data.service.MessageService;
+import com.big.data.service.impl.SessionManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -153,13 +154,15 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
                     .getName()));
         }
 
-        messageService.dispatcherMessage(ctx, frame);
+        //messageService.dispatcherMessage(ctx, frame);
+        SessionManager.dispatcherMessage(ctx,frame);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         ctx.close();
+        logger.debug("exceptionCaught 客户端异常关闭:" + ctx.channel().remoteAddress());
     }
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
@@ -171,5 +174,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
     public void channelInactive(ChannelHandlerContext ctx) {
         logger.debug("channelInactive 客户端断开:" + ctx.channel().remoteAddress());
+        SessionManager.onChannelClose(ctx);
     }
 }

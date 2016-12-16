@@ -16,7 +16,7 @@ package com.im.server.core;
  */
 
 import com.big.data.service.MessageService;
-import com.im.sdk.protocol.Message;
+import com.im.protocol.Message;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -43,7 +43,6 @@ public final class IMServer {
 
         new Thread(new Runnable() {
 
-            @Override
             public void run() {
                 logger.info("=====================>");
                 logger.info("ServerBootstrap 启动");

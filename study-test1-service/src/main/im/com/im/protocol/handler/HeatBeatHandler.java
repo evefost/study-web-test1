@@ -1,7 +1,7 @@
 package com.im.protocol.handler;
 
-import com.im.sdk.protocol.Message;
-import com.im.sdk.protocol.Message.Data;
+import com.im.protocol.Message;
+import com.im.protocol.Message.Data;
 import com.im.server.core.ProtocolHandler;
 import com.im.server.util.XXTEA;
 import io.netty.channel.ChannelHandlerContext;

@@ -16,8 +16,9 @@
 package com.im.server.core;
 
 import com.big.data.service.MessageService;
-import com.im.sdk.protocol.Message;
-import com.im.sdk.protocol.Message.Data;
+import com.big.data.service.impl.SessionManager;
+import com.im.protocol.Message;
+import com.im.protocol.Message.Data;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -42,7 +43,8 @@ public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> 
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Data data) throws Exception {
-        messageService.dispatcherMessage(ctx,data);
+        //messageService.dispatcherMessage(ctx,data);
+        SessionManager.dispatcherMessage(ctx,data);
     }
 
     @Override
@@ -77,5 +79,6 @@ public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> 
 
     public void channelInactive(ChannelHandlerContext ctx) {
         logger.debug("channelInactive 客户端断开:" + ctx.channel().remoteAddress());
+        SessionManager.onChannelClose(ctx);
     }
 }

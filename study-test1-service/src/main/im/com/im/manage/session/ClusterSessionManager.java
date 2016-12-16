@@ -1,7 +1,7 @@
 
 package com.im.manage.session;
 
-import com.im.sdk.protocol.Message.Data;
+import com.im.protocol.Message.Data;
 import com.im.server.core.IMSession;
 
 import java.util.Collection;
@@ -66,13 +66,11 @@ public class ClusterSessionManager implements SessionManager {
         return null;
     }
 
-    @Override
     public void addSession(IMSession session) {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
     public boolean isAreadyLogin(Data data) {
         // TODO Auto-generated method stub
         return false;

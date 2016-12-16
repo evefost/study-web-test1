@@ -1,7 +1,7 @@
 
 package com.im.manage.session;
 
-import com.im.sdk.protocol.Message.Data;
+import com.im.protocol.Message.Data;
 import com.im.server.core.IMSession;
 import com.im.server.util.StringUtils;
 
@@ -56,17 +56,14 @@ public class DefaultSessionManager implements SessionManager {
 
     public void removeSession(String account) {
         sessions.remove(account);
-
     }
 
 
-    @Override
     public String getAccount(IMSession ios) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
     public boolean isAreadyLogin(Data data) {
         String clientId = data.getClientId();
         String uid = data.getSenderId();
@@ -78,7 +75,6 @@ public class DefaultSessionManager implements SessionManager {
         return false;
     }
 
-    @Override
     public boolean containsSession(IMSession ios) {
         // TODO Auto-generated method stub
         return false;

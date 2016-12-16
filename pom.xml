@@ -42,7 +42,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.1.15</version>
+        </dependency>
         <!--log4j日志依懒-->
         <dependency>
             <groupId>commons-logging</groupId>
