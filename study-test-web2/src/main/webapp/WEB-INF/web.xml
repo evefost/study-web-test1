@@ -93,6 +93,10 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.map</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.proto</url-pattern>
+    </servlet-mapping>
     <!--使用Spring MVC,配置DispatcherServlet是第一步。DispatcherServlet是一个Servlet,,所以可以配置多个DispatcherServlet-->
     <!--DispatcherServlet是前置控制器，配置在web.xml文件中的。拦截匹配的请求，Servlet拦截匹配规则要自已定义，把拦截下来的请求，依据某某规则分发到目标Controller(我们写的Action)来处理。-->
     <servlet>
@@ -122,7 +126,7 @@
     </servlet-mapping>
 
     <welcome-file-list><!--指定欢迎页面-->
-        <welcome-file>websocket.jsp</welcome-file>
+        <welcome-file>/index.html</welcome-file>
     </welcome-file-list>
     <error-page> <!--当系统出现404错误，跳转到页面nopage.html-->
         <error-code>404</error-code>

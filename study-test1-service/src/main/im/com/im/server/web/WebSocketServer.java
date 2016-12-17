@@ -16,6 +16,7 @@
 package com.im.server.web;
 
 import com.big.data.service.MessageService;
+import com.im.protocol.Message;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -27,6 +28,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
@@ -113,6 +116,8 @@ public class WebSocketServer {
                             pipeline.addLast(new HttpServerCodec());
                             pipeline.addLast(new HttpObjectAggregator(65536));
                             pipeline.addLast(new WebSocketServerCompressionHandler());
+                            pipeline.addLast(new ProtobufDecoder(Message.Data.getDefaultInstance()));
+                            pipeline.addLast(new ProtobufEncoder());
                             pipeline.addLast(new WebSocketServerHandler(messageService));
                         }
                     });

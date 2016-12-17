@@ -1,14 +1,20 @@
 package com.im.server.core;
 
+import com.im.protocol.Message;
 import com.im.protocol.Message.Data;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 public class IMSession implements Serializable {
+
+    public static final int TYPE_APP = 0;
+
+    public static final int TYPE_WEB = 1;
 
     private static final long serialVersionUID = 1L;
 
@@ -20,6 +26,7 @@ public class IMSession implements Serializable {
     private String uid;
     private long loginTime;
     private String encriptKey;
+    private int sessionType;
 
     private IMSession(Channel channel) {
         this.channel = channel;
@@ -37,6 +44,14 @@ public class IMSession implements Serializable {
 
     public static long getSerialversionuid() {
         return serialVersionUID;
+    }
+
+    public int getSessionType() {
+        return sessionType;
+    }
+
+    public void setSessionType(int sessionType) {
+        this.sessionType = sessionType;
     }
 
     public String getEncriptKey() {
@@ -65,7 +80,19 @@ public class IMSession implements Serializable {
 
     public boolean write(Object msg) {
         if (channel != null && channel.isActive()) {
-            return channel.writeAndFlush(msg).awaitUninterruptibly(5000);
+            if (sessionType == TYPE_WEB) {
+                TextWebSocketFrame txframe = null;
+                if (msg instanceof Message.Data.Builder) {
+                    Message.Data.Builder data = (Data.Builder) msg;
+
+
+                } else if (msg instanceof Message.Data) {
+                    Message.Data data = (Data) msg;
+                }
+            } else {
+                return channel.writeAndFlush(msg).awaitUninterruptibly(5000);
+            }
+
         }
         return false;
     }

@@ -49,16 +49,15 @@ public class SessionManager {
         } else if (msg instanceof TextWebSocketFrame) {
             TextWebSocketFrame textframe = (TextWebSocketFrame) msg;
             logger.debug("消息类型[SocketFrame]:" + textframe.text());
-
             ctx.channel().write(new TextWebSocketFrame(textframe.text().toUpperCase()));
-            //消息转换
+
+            //消息转换:probuf统一处理
             JsonMsg jsonMsg = new JsonMsg();
             jsonMsg.setId(UUID.randomUUID().toString());
             jsonMsg.setCmd(Message.Data.Cmd.BIND_CLIENT_VALUE);
             jsonMsg.setContent("ab消息类型");
             jsonMsg.setCreateTime(new Date().getTime());
             jsonMsg.setClientId(UUID.randomUUID().toString());
-
             Message.Data.Builder reply = Message.Data.newBuilder();
             reply.setId(jsonMsg.getId());
             reply.setCmd(jsonMsg.getCmd());

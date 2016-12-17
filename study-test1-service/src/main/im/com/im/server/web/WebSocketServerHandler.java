@@ -33,6 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.UnsupportedEncodingException;
+
 import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaderNames.HOST;
 import static io.netty.handler.codec.http.HttpMethod.GET;
@@ -149,14 +151,33 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
             return;
         }
-        if (!(frame instanceof TextWebSocketFrame)) {
-            throw new UnsupportedOperationException(String.format("%s frame types not supported", frame.getClass()
-                    .getName()));
+
+        if (frame instanceof TextWebSocketFrame) {
+            logger.debug("TextWebSocketFrame 消息");
+        } else if (frame instanceof BinaryWebSocketFrame) {
+            logger.debug("BinaryWebSocketFrame 消息");
+
+            BinaryWebSocketFrame binaryWebSocketFrame = (BinaryWebSocketFrame) frame;
+            ByteBuf buf = binaryWebSocketFrame.content();
+            logger.debug("BinaryWebSocketFrame 消息" + buf);
+            byte[] b = new byte[buf.readableBytes()];
+            buf.readBytes(b);
+            String body = null;
+            try {
+                body = new String(b, "UTF-8");
+                logger.debug("BinaryWebSocketFrame 消息" + body);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                logger.error("BinaryWebSocketFrame 消息失败");
+            }
+
+            //Message.Data.parseFrom(binaryWebSocketFrame.);
         }
 
         //messageService.dispatcherMessage(ctx, frame);
-        SessionManager.dispatcherMessage(ctx,frame);
+        //SessionManager.dispatcherMessage(ctx,frame);
     }
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
@@ -164,6 +185,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         ctx.close();
         logger.debug("exceptionCaught 客户端异常关闭:" + ctx.channel().remoteAddress());
     }
+
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
 
