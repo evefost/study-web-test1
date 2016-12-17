@@ -1,7 +1,6 @@
 
 package com.im.manage.session;
 
-import com.im.protocol.Message.Data;
 import com.im.server.core.IMSession;
 
 import java.util.Collection;
@@ -57,5 +56,5 @@ public interface SessionManager {
      */
     public String getAccount(IMSession ios);
 
-    public boolean isAreadyLogin(Data data);
+
 }

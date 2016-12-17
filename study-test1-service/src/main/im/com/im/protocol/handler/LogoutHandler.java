@@ -7,6 +7,8 @@ import com.im.server.core.ProtocolHandler;
 import com.im.server.util.SessionUtils;
 import io.netty.channel.ChannelHandlerContext;
 
+import static com.big.data.service.impl.SessionManager.getSessionByUid;
+
 /***
  * 登出处理
  *
@@ -18,7 +20,7 @@ public class LogoutHandler extends ProtocolHandler {
     public void handleRequest(ChannelHandlerContext ctx, Message.Data data) {
 
         try {
-            IMSession ios = getSessionManager().getSession(data.getSenderId());
+            IMSession ios = getSessionByUid(data.getSenderId());
 
 //			String account =ios.getTag(CIMConstant.SESSION_KEY).toString();
 //			ios.removeTag(CIMConstant.SESSION_KEY);

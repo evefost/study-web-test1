@@ -10,7 +10,7 @@ public class HeatBeatHandler extends ProtocolHandler {
 
     @Override
     public void handleRequest(ChannelHandlerContext ctx, Data data) {
-        System.out.println("HeatBeatHandler=================>>ct:" + data.getContent());
+        logger.debug("收到客户端心跳");
         try {
             String key = "123";
             String dstring = new String(XXTEA.decrypt(data.getBody().toByteArray(), key));

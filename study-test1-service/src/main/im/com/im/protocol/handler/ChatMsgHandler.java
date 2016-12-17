@@ -8,15 +8,17 @@ import com.im.server.core.ProtocolHandler;
 import com.im.server.util.XXTEA;
 import io.netty.channel.ChannelHandlerContext;
 
+import static com.big.data.service.impl.SessionManager.getSessionByUid;
+
 public class ChatMsgHandler extends ProtocolHandler {
 
     @Override
     public void handleRequest(ChannelHandlerContext ctx, Data data) {
         if (data.getIsEncript()) {
             String dec = XXTEA.decryptBase64StringToString(data.getContent(), data.getEncriptKey());
-            System.out.println("channelRead  encript:普通消息:" + data.getContent() + "==" + dec);
+            logger.debug("加密普通消息:" + data.getContent() + "==" + dec);
         } else {
-            System.out.println("channelRead  普通消息:" + data.getContent() + "==time:" + data.getCreateTime());
+            logger.debug("普通消息:" + data.getContent() + "==time:" + data.getCreateTime());
         }
 
         //先保存消息，用户收到才删除
@@ -27,11 +29,13 @@ public class ChatMsgHandler extends ProtocolHandler {
         reply.setCmd(Cmd.CHAT_TXT_ECHO_VALUE);
         reply.setCreateTime(data.getCreateTime());
         ctx.writeAndFlush(reply);
-        IMSession receiverSession = getSessionManager().getSession(data.getReceiverId());
+
+        IMSession receiverSession = getSessionByUid(data.getReceiverId());
         if (receiverSession != null) {
             receiverSession.write(data);
         } else {
             //该用户不存在或没在线
+            logger.debug("该用户不存在或没在线...");
         }
     }
 

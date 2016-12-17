@@ -1,7 +1,6 @@
 
 package com.im.manage.session;
 
-import com.im.protocol.Message.Data;
 import com.im.server.core.IMSession;
 import com.im.server.util.StringUtils;
 
@@ -64,16 +63,6 @@ public class DefaultSessionManager implements SessionManager {
         return null;
     }
 
-    public boolean isAreadyLogin(Data data) {
-        String clientId = data.getClientId();
-        String uid = data.getSenderId();
-        String oldClientId = loginUsers.get(uid);
-        //同一个uid,不同的clientId,
-        if (!StringUtils.isEmpty(oldClientId) && !oldClientId.equals(clientId)) {
-            return true;
-        }
-        return false;
-    }
 
     public boolean containsSession(IMSession ios) {
         // TODO Auto-generated method stub

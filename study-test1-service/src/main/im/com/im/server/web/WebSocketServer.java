@@ -16,7 +16,6 @@
 package com.im.server.web;
 
 import com.big.data.service.MessageService;
-import com.big.data.service.impl.SessionManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -78,7 +77,6 @@ public class WebSocketServer {
 
         new Thread(new Runnable() {
 
-            @Override
             public void run() {
                 try {
                     main(null);
