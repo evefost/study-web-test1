@@ -29,7 +29,7 @@ public class LoginHandler extends ProtocolHandler {
             offLineReply.setCreateTime(data.getCreateTime());
             offLineReply.setReceiverId(data.getSenderId());
             IMSession oldSession = getSession(data.getClientId());
-            oldSession.write(offLineReply);
+            oldSession.write(offLineReply.build());
             removeSession(oldSession);
         }
 

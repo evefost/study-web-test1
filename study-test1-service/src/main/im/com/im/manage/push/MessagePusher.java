@@ -54,7 +54,7 @@ public class MessagePusher implements IMessagePusher {
 			}*/
 
         //推送消息
-        session.write(msg);
+        //session.write(msg);
 
         //}else{
 			

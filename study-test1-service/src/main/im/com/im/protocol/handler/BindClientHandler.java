@@ -13,7 +13,7 @@ public class BindClientHandler extends ProtocolHandler {
 
     @Override
     public void handleRequest(ChannelHandlerContext ctx, Message.Data data) {
-        logger.debug("绑定客户端,创建会话...");
+        logger.debug("绑定{}客户端,创建会话...", data.getClientName());
         SessionManager.createScession(ctx, data);
     }
 

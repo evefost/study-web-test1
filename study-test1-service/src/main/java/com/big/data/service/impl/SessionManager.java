@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class SessionManager {
 
@@ -54,7 +56,9 @@ public class SessionManager {
             try {
                 logger.debug("json转成probuf[" + builder.getContent());
                 JsonFormat.merge(jsonFormat, builder);
+                builder.setDecodeType(IMSession.DECODE_TYPE_WEB_TEXT);
                 data = builder.build();
+
             } catch (JsonFormat.ParseException e) {
                 logger.error("TextWebSocketFrame 消息解码失败");
             }
@@ -64,7 +68,7 @@ public class SessionManager {
             byte[] b = new byte[buf.readableBytes()];
             buf.readBytes(b);
             try {
-                data = Message.Data.parseFrom(b);
+                data = Message.Data.newBuilder().mergeFrom(b).setDecodeType(IMSession.DECODE_TYPE_WEB_BINARY).build();
                 logger.debug("消息类型[BinaryWebSocketFrame]" + data.getContent());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -73,17 +77,21 @@ public class SessionManager {
         } else {
             logger.warn("消息类型[不支持该类型]");
         }
-        ProtocolHandler protocolHandler = ProtocolHandllerLoader.getProtocolHandler(data.getCmd());
-        if (protocolHandler != null && data != null) {
-            protocolHandler.handleRequest(ctx, data);
+        if (data != null) {
+            ProtocolHandler protocolHandler = ProtocolHandllerLoader.getProtocolHandler(data.getCmd());
+            if (protocolHandler != null) {
+                protocolHandler.handleRequest(ctx, data);
+            }
         }
+
     }
 
     public static void createScession(ChannelHandlerContext ctx, Message.Data data) {
         IMSession newSession = IMSession.buildSesion(ctx, data);
+        newSession.setDecodeType(data.getDecodeType());
         sessions.put(newSession.getClientId(), newSession);
-        bindChannels.put(ctx.channel().remoteAddress().toString(),data.getClientId());
-        reply(newSession,data.getId(), data.getCmd());
+        bindChannels.put(ctx.channel().remoteAddress().toString(), data.getClientId());
+        reply(newSession, data.getId(), data.getCmd());
     }
 
 
@@ -119,23 +127,31 @@ public class SessionManager {
     }
 
 
-    public static void reply(IMSession newSession,String msgId, Integer cmd) {
+    public static void reply(IMSession newSession, String msgId, Integer cmd) {
         Message.Data.Builder reply = Message.Data.newBuilder();
         reply.setId(msgId);
         reply.setCmd(cmd);
         reply.setCreateTime(System.currentTimeMillis());
-        newSession.write(reply);
+        newSession.write(reply.build());
     }
 
-    public static void onChannelClose(ChannelHandlerContext ctx){
+    public static void onChannelClose(ChannelHandlerContext ctx) {
+        logger.debug("销毁会话...");
         String clienId = bindChannels.get(ctx.channel().remoteAddress().toString());
-        if(clienId != null){
+        if (clienId != null) {
             IMSession imSession = sessions.get(clienId);
             sessions.remove(clienId);
             String uid = imSession.getUid();
-            if(uid != null){
+            if (uid != null) {
                 loginUsers.remove(uid);
             }
+        }
+    }
+
+    public static void bradcast(Message.Data data) {
+        Set<Map.Entry<String, IMSession>> entries = sessions.entrySet();
+        for (Map.Entry<String, IMSession> entry : entries) {
+            entry.getValue().write(data);
         }
     }
 

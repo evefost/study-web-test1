@@ -1,21 +1,31 @@
 package com.im.server.core;
 
+import com.googlecode.protobuf.format.JsonFormat;
 import com.im.protocol.Message;
 import com.im.protocol.Message.Data;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.omg.CORBA.Object;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import static com.googlecode.protobuf.format.JsonFormat.printToString;
+
 public class IMSession implements Serializable {
-
     public static final int TYPE_APP = 0;
-
     public static final int TYPE_WEB = 1;
-
+    public static final int DECODE_TYPE_PROBUF = 0;
+    public static final int DECODE_TYPE_WEB_TEXT = 1;
+    public static final int DECODE_TYPE_WEB_BINARY = 2;
+    private static final Logger logger = LoggerFactory.getLogger(IMSession.class);
     private static final long serialVersionUID = 1L;
 
     private Channel channel;
@@ -27,6 +37,8 @@ public class IMSession implements Serializable {
     private long loginTime;
     private String encriptKey;
     private int sessionType;
+    //解码类型
+    private int decodeType;
 
     private IMSession(Channel channel) {
         this.channel = channel;
@@ -44,6 +56,14 @@ public class IMSession implements Serializable {
 
     public static long getSerialversionuid() {
         return serialVersionUID;
+    }
+
+    public int getDecodeType() {
+        return decodeType;
+    }
+
+    public void setDecodeType(int decodeType) {
+        this.decodeType = decodeType;
     }
 
     public int getSessionType() {
@@ -78,17 +98,23 @@ public class IMSession implements Serializable {
         this.channel = channel;
     }
 
-    public boolean write(Object msg) {
+    public boolean write(Message.Data msg) {
         if (channel != null && channel.isActive()) {
-            if (sessionType == TYPE_WEB) {
-                TextWebSocketFrame txframe = null;
-                if (msg instanceof Message.Data.Builder) {
-                    Message.Data.Builder data = (Data.Builder) msg;
-
-
-                } else if (msg instanceof Message.Data) {
-                    Message.Data data = (Data) msg;
+            Object txframe2 = null;
+            if (decodeType == DECODE_TYPE_WEB_TEXT) {
+                TextWebSocketFrame txframe = new TextWebSocketFrame(printToString(msg));
+                channel.writeAndFlush(txframe).awaitUninterruptibly(5000);
+            } else if (decodeType == DECODE_TYPE_WEB_BINARY) {
+                ByteBuf byteBuf = Unpooled.wrappedBuffer(msg.toByteArray());
+                try {
+                    Data.Builder builder = Data.newBuilder().mergeFrom(byteBuf.array());
+                    String s = JsonFormat.printToString(builder.build());
+                    logger.error("json =====" + s);
+                } catch (Exception e) {
+                    logger.error("json ==xxxxxx===");
                 }
+                BinaryWebSocketFrame binaryWebSocketFrame = new BinaryWebSocketFrame(byteBuf);
+                channel.writeAndFlush(binaryWebSocketFrame).awaitUninterruptibly(5000);
             } else {
                 return channel.writeAndFlush(msg).awaitUninterruptibly(5000);
             }

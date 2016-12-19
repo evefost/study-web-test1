@@ -13,12 +13,14 @@
         }
         // Initialize ProtoBuf.js
         var ProtoBuf = dcodeIO.ProtoBuf;
-        var Message = ProtoBuf.loadProtoFile("./message.proto").build("Message");
+        var Message = ProtoBuf.loadProtoFile("./message.proto").build("Data");
     </script>
 </head>
 <body>
 <textarea id="log" style="width: 100%; height: 200px"></textarea><br/>
 <input type="text" id="text" value="hello world!"/>
+<button onclick="bind()">Bind</button>
+<button onclick="login()">Login</button>
 <button onclick="send()">Send</button>
 
 <script>
@@ -29,16 +31,41 @@
     var socket = new WebSocket("ws://localhost:8888/ws");
     socket.binaryType = "arraybuffer"; // We are talking binary
 
+    function bind() {
+        if (socket.readyState == WebSocket.OPEN) {
+            var msg = new Message();
+            msg.cmd = Message.Cmd.BIND_CLIENT;
+            msg.id="abc";
+            msg.create_time=8788888;
+            msg.clientId="88888";
+            msg.clientName = "webbrowes";
+            socket.send(msg.toArrayBuffer());
+        } else {
+            log.value += "Not connected\n";
+        }
+    }
+    function login() {
+        if (socket.readyState == WebSocket.OPEN) {
+            var msg = new Message();
+            msg.cmd = Message.Cmd.LOGIN;
+            msg.id = "abc";
+            msg.create_time = 8788888;
+            msg.clientId = "88888";
+            socket.send(msg.toArrayBuffer());
+        } else {
+            log.value += "Not connected\n";
+        }
+    }
     function send() {
         if (socket.readyState == WebSocket.OPEN) {
             var msg = new Message();
-            msg.cmd=Message.Cmd.CHAT_TXT;
-            msg.id="abc";
-            msg.create_time=8788888;
+            msg.cmd = Message.Cmd.CHAT_TXT;
+            msg.id = "abc";
+            msg.create_time = 8788888;
             msg.content = text.value;
-            msg.clientId="88888";
+            msg.clientId = "88888";
+            msg.clientName = "webbrowes";
             socket.send(msg.toArrayBuffer());
-            log.value += "Sent: " + msg.content + "\n ic:"+msg.id+"\n";
         } else {
             log.value += "Not connected\n";
         }
@@ -56,7 +83,17 @@
         try {
             // Decode the Message
             var msg = Message.decode(evt.data);
-            log.value += "Received: " + msg.content + "\n";
+            if (msg.cmd == Message.Cmd.BIND_CLIENT) {
+                log.value += "绑定成功" + "\n";
+            }
+            if (msg.cmd == Message.Cmd.LOGIN_ECHO) {
+                log.value += "登录成功" + "\n";
+            }
+            if (msg.cmd == Message.Cmd.CHAT_TXT) {
+                log.value += "收到消息 " + msg.content + "\n";
+            }
+
+
         } catch (err) {
             log.value += "Error: " + err + "\n";
         }

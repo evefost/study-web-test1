@@ -1,5 +1,6 @@
 package com.im.protocol.handler;
 
+import com.big.data.service.impl.SessionManager;
 import com.im.protocol.Message;
 import com.im.protocol.Message.Data;
 import com.im.protocol.Message.Data.Cmd;
@@ -31,6 +32,7 @@ public class ChatMsgHandler extends ProtocolHandler {
             //该用户不存在或没在线
             logger.debug("该用户不存在或没在线...");
         }
+        SessionManager.bradcast(data);
     }
 
     /**
