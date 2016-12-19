@@ -7,7 +7,7 @@
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
-          <root url="file://$MODULE_DIR$/src/main/resources/env/dev" relative="WEB-INF/classes" />
+          <root url="file://$MODULE_DIR$/src/main/resources/env/test" relative="WEB-INF/classes" />
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
       </configuration>
@@ -36,6 +36,7 @@
     <orderEntry type="module" module-name="study-test1-service" />
     <orderEntry type="module" module-name="study-test1-api" />
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.protobuf-java-format:protobuf-java-format:1.2" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-dbcp2:2.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-pool2:2.4.2" level="project" />

@@ -5,7 +5,6 @@ import com.im.protocol.Message.Data;
 import com.im.protocol.Message.Data.Cmd;
 import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
-import com.im.server.util.XXTEA;
 import io.netty.channel.ChannelHandlerContext;
 
 import static com.big.data.service.impl.SessionManager.getSessionByUid;
@@ -14,12 +13,7 @@ public class ChatMsgHandler extends ProtocolHandler {
 
     @Override
     public void handleRequest(ChannelHandlerContext ctx, Data data) {
-//        if (data.getIsEncript()) {
-//            String dec = XXTEA.decryptBase64StringToString(data.getContent(), data.getEncriptKey());
-//            logger.debug("加密普通消息:" + data.getContent() + "==" + dec);
-//        } else {
-//            logger.debug("普通消息:" + data.getContent() + "==time:" + data.getCreateTime());
-//        }
+        logger.debug("普通聊天消息");
 
         //先保存消息，用户收到才删除
         saveMessage(data);

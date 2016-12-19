@@ -1,19 +1,19 @@
 package com.big.data.service.impl;
 
-import com.im.protocol.JsonMsg;
+import com.googlecode.protobuf.format.JsonFormat;
 import com.im.protocol.Message;
 import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
 import com.im.server.util.ProtocolHandllerLoader;
 import com.im.server.util.StringUtils;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
 
 public class SessionManager {
 
@@ -47,24 +47,29 @@ public class SessionManager {
             data = (Message.Data) msg;
             logger.debug("消息类型[probuf]:" + data.getContent());
         } else if (msg instanceof TextWebSocketFrame) {
+            logger.debug("消息类型[TextWebSocketFrame]");
             TextWebSocketFrame textframe = (TextWebSocketFrame) msg;
-            logger.debug("消息类型[SocketFrame]:" + textframe.text());
-            ctx.channel().write(new TextWebSocketFrame(textframe.text().toUpperCase()));
-
-            //消息转换:probuf统一处理
-            JsonMsg jsonMsg = new JsonMsg();
-            jsonMsg.setId(UUID.randomUUID().toString());
-            jsonMsg.setCmd(Message.Data.Cmd.BIND_CLIENT_VALUE);
-            jsonMsg.setContent("ab消息类型");
-            jsonMsg.setCreateTime(new Date().getTime());
-            jsonMsg.setClientId(UUID.randomUUID().toString());
-            Message.Data.Builder reply = Message.Data.newBuilder();
-            reply.setId(jsonMsg.getId());
-            reply.setCmd(jsonMsg.getCmd());
-            reply.setContent(jsonMsg.getContent());
-            reply.setCreateTime(jsonMsg.getCreateTime());
-            reply.setClientId(jsonMsg.getClientId());
-            data = reply.build();
+            String jsonFormat = textframe.text();
+            Message.Data.Builder builder = Message.Data.newBuilder();
+            try {
+                logger.debug("json转成probuf[" + builder.getContent());
+                JsonFormat.merge(jsonFormat, builder);
+                data = builder.build();
+            } catch (JsonFormat.ParseException e) {
+                logger.error("TextWebSocketFrame 消息解码失败");
+            }
+        } else if (msg instanceof BinaryWebSocketFrame) {
+            BinaryWebSocketFrame binaryWebSocketFrame = (BinaryWebSocketFrame) msg;
+            ByteBuf buf = binaryWebSocketFrame.content();
+            byte[] b = new byte[buf.readableBytes()];
+            buf.readBytes(b);
+            try {
+                data = Message.Data.parseFrom(b);
+                logger.debug("消息类型[BinaryWebSocketFrame]" + data.getContent());
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("BinaryWebSocketFrame 消息解码失败");
+            }
         } else {
             logger.warn("消息类型[不支持该类型]");
         }

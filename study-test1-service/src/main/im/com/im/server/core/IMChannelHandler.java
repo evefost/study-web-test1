@@ -49,9 +49,7 @@ public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> 
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-
-        logger.debug("channelActive 已连上服务器 发送聊天服务地址给客户端 :" + ctx.channel().remoteAddress());
-        logger.debug("channelId :" + ctx.channel().id());
+        logger.debug("app client channelId 接入 :" + ctx.channel().id());
 
     }
 
@@ -78,7 +76,7 @@ public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> 
     }
 
     public void channelInactive(ChannelHandlerContext ctx) {
-        logger.debug("channelInactive 客户端断开:" + ctx.channel().remoteAddress());
+        logger.debug("app 客户端断开:" + ctx.channel().remoteAddress());
         SessionManager.onChannelClose(ctx);
     }
 }

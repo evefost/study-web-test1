@@ -20,7 +20,7 @@ public class LoginHandler extends ProtocolHandler {
 
     @Override
     public void handleRequest(ChannelHandlerContext ctx, Data data) {
-
+        logger.debug("登录消息");
         if (isAreadyLogin(data)) {
             // 让另一端下线,并清除以前的session
             Message.Data.Builder offLineReply = Message.Data.newBuilder();

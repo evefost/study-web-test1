@@ -17,7 +17,6 @@ package com.im.server.web;
 
 import com.big.data.service.MessageService;
 import com.big.data.service.impl.SessionManager;
-import com.im.protocol.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -33,8 +32,6 @@ import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.UnsupportedEncodingException;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaderNames.HOST;
@@ -87,10 +84,8 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, Object msg) {
         if (msg instanceof FullHttpRequest) {
-            logger.debug("http 消息");
             handleHttpRequest(ctx, (FullHttpRequest) msg);
         } else if (msg instanceof WebSocketFrame) {
-            logger.debug("websocket 消息");
             handleWebSocketFrame(ctx, (WebSocketFrame) msg);
         }
     }
@@ -153,28 +148,14 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             return;
         }
 
-        if (frame instanceof TextWebSocketFrame) {
-            logger.debug("TextWebSocketFrame 消息");
-        } else if (frame instanceof BinaryWebSocketFrame) {
-            logger.debug("BinaryWebSocketFrame 消息");
-            BinaryWebSocketFrame binaryWebSocketFrame = (BinaryWebSocketFrame) frame;
-            ByteBuf buf = binaryWebSocketFrame.content();
-            logger.debug("BinaryWebSocketFrame 消息" + buf);
-            byte[] b = new byte[buf.readableBytes()];
-            buf.readBytes(b);
-            try {
-                Message.Data data = Message.Data.parseFrom(b);
-                logger.debug("BinaryWebSocketFrame 消息" + data.getContent());
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.error("BinaryWebSocketFrame 消息失败");
-            }
-
-            //Message.Data.parseFrom(binaryWebSocketFrame.);
+        if (frame instanceof TextWebSocketFrame || frame instanceof BinaryWebSocketFrame) {
+            logger.debug("WebSocketFrame 消息");
+            SessionManager.dispatcherMessage(ctx, frame);
+        } else {
+            throw new UnsupportedOperationException(String.format("%s frame types not supported", frame.getClass()
+                    .getName()));
         }
 
-        //messageService.dispatcherMessage(ctx, frame);
-        //SessionManager.dispatcherMessage(ctx,frame);
     }
 
 
@@ -188,13 +169,12 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
 
-        logger.debug("channelActive 已连上服务器 发送聊天服务地址给客户端 :" + ctx.channel().remoteAddress());
-        logger.debug("channelId :" + ctx.channel().id());
+        logger.debug("web client channelId 接入 :" + ctx.channel().id());
 
     }
 
     public void channelInactive(ChannelHandlerContext ctx) {
-        logger.debug("channelInactive 客户端断开:" + ctx.channel().remoteAddress());
+        logger.debug("web 客户端断开:" + ctx.channel().remoteAddress());
         SessionManager.onChannelClose(ctx);
     }
 }

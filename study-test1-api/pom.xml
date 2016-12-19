@@ -20,6 +20,11 @@
             <artifactId>protobuf-java</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.protobuf-java-format</groupId>
+            <artifactId>protobuf-java-format</artifactId>
+            <version>1.2</version>
+        </dependency>
     </dependencies>
     <artifactId>study-test1-api</artifactId>
 

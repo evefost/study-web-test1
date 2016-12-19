@@ -18,7 +18,7 @@ public class LogoutHandler extends ProtocolHandler {
 
     @Override
     public void handleRequest(ChannelHandlerContext ctx, Message.Data data) {
-
+        logger.debug("登出消息");
         try {
             IMSession ios = getSessionByUid(data.getSenderId());
 
