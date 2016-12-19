@@ -17,6 +17,7 @@ package com.im.server.web;
 
 import com.big.data.service.MessageService;
 import com.big.data.service.impl.SessionManager;
+import com.im.protocol.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -156,17 +157,15 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             logger.debug("TextWebSocketFrame 消息");
         } else if (frame instanceof BinaryWebSocketFrame) {
             logger.debug("BinaryWebSocketFrame 消息");
-
             BinaryWebSocketFrame binaryWebSocketFrame = (BinaryWebSocketFrame) frame;
             ByteBuf buf = binaryWebSocketFrame.content();
             logger.debug("BinaryWebSocketFrame 消息" + buf);
             byte[] b = new byte[buf.readableBytes()];
             buf.readBytes(b);
-            String body = null;
             try {
-                body = new String(b, "UTF-8");
-                logger.debug("BinaryWebSocketFrame 消息" + body);
-            } catch (UnsupportedEncodingException e) {
+                Message.Data data = Message.Data.parseFrom(b);
+                logger.debug("BinaryWebSocketFrame 消息" + data.getContent());
+            } catch (Exception e) {
                 e.printStackTrace();
                 logger.error("BinaryWebSocketFrame 消息失败");
             }

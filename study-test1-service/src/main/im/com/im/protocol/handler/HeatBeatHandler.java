@@ -12,9 +12,9 @@ public class HeatBeatHandler extends ProtocolHandler {
     public void handleRequest(ChannelHandlerContext ctx, Data data) {
         logger.debug("收到客户端心跳");
         try {
-            String key = "123";
-            String dstring = new String(XXTEA.decrypt(data.getBody().toByteArray(), key));
-            System.out.println("decrpt:" + dstring);
+//            String key = "123";
+//            String dstring = new String(XXTEA.decrypt(data.getBody().toByteArray(), key));
+//            System.out.println("decrpt:" + dstring);
         } catch (Exception e) {
             System.out.println("Ex:" + e.toString());
         }

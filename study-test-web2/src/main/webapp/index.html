@@ -13,7 +13,7 @@
         }
         // Initialize ProtoBuf.js
         var ProtoBuf = dcodeIO.ProtoBuf;
-        var Message = ProtoBuf.loadProtoFile("./example.proto").build("Message");
+        var Message = ProtoBuf.loadProtoFile("./message.proto").build("Message");
     </script>
 </head>
 <body>
@@ -31,9 +31,14 @@
 
     function send() {
         if (socket.readyState == WebSocket.OPEN) {
-            var msg = new Message(text.value);
+            var msg = new Message();
+            msg.cmd=Message.Cmd.CHAT_TXT;
+            msg.id="abc";
+            msg.create_time=8788888;
+            msg.content="wwwwwww"
+            msg.clientId="88888";
             socket.send(msg.toArrayBuffer());
-            log.value += "Sent: " + msg.text + "\n";
+            log.value += "Sent: " + msg.content + "\n ic:"+msg.id+"\n";
         } else {
             log.value += "Not connected\n";
         }
@@ -51,7 +56,7 @@
         try {
             // Decode the Message
             var msg = Message.decode(evt.data);
-            log.value += "Received: " + msg.text + "\n";
+            log.value += "Received: " + msg.content + "\n";
         } catch (err) {
             log.value += "Error: " + err + "\n";
         }

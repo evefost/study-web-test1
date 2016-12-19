@@ -14,12 +14,12 @@ public class ChatMsgHandler extends ProtocolHandler {
 
     @Override
     public void handleRequest(ChannelHandlerContext ctx, Data data) {
-        if (data.getIsEncript()) {
-            String dec = XXTEA.decryptBase64StringToString(data.getContent(), data.getEncriptKey());
-            logger.debug("加密普通消息:" + data.getContent() + "==" + dec);
-        } else {
-            logger.debug("普通消息:" + data.getContent() + "==time:" + data.getCreateTime());
-        }
+//        if (data.getIsEncript()) {
+//            String dec = XXTEA.decryptBase64StringToString(data.getContent(), data.getEncriptKey());
+//            logger.debug("加密普通消息:" + data.getContent() + "==" + dec);
+//        } else {
+//            logger.debug("普通消息:" + data.getContent() + "==time:" + data.getCreateTime());
+//        }
 
         //先保存消息，用户收到才删除
         saveMessage(data);

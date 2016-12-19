@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="study-test-web2:war exploded">
-    <output-path>$PROJECT_DIR$/study-test-web2/target/study-web-test-debug</output-path>
+    <output-path>$PROJECT_DIR$/study-test-web2/target/study-web-dev-debug</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -41,7 +41,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/study-test-web2/target/study-web-test-debug/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/study-test-web2/target/study-web-dev-debug/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="study-test-web2/web/Web" />
     </root>
