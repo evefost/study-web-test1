@@ -29,15 +29,21 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 
 public final class IMServer {
     private static final Logger logger = LoggerFactory.getLogger(IMServer.class);
     @Autowired
     MessageService messageService;
-    @Value("${socket.port}")
     private int port;
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
 
     public void start() {
 
@@ -58,7 +64,6 @@ public final class IMServer {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             logger.debug("新连接=======id>" + ch.id());
-                            messageService.addChannel(0, ch);
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new ProtobufDecoder(Message.Data.getDefaultInstance()));
                             pipeline.addLast(new ProtobufEncoder());
@@ -77,9 +82,5 @@ public final class IMServer {
                 }
             }
         }).start();
-    }
-
-    public void setPort(int port) {
-        this.port = port;
     }
 }

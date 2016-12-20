@@ -5,7 +5,6 @@ import com.im.protocol.Message;
 import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
 import com.im.server.util.ProtocolHandllerLoader;
-import com.im.server.util.StringUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
@@ -86,12 +85,12 @@ public class SessionManager {
 
     }
 
-    public static void createScession(ChannelHandlerContext ctx, Message.Data data) {
+    public static IMSession createScession(ChannelHandlerContext ctx, Message.Data data) {
         IMSession newSession = IMSession.buildSesion(ctx, data);
         newSession.setDecodeType(data.getDecodeType());
         sessions.put(newSession.getClientId(), newSession);
         bindChannels.put(ctx.channel().remoteAddress().toString(), data.getClientId());
-        reply(newSession, data.getId(), data.getCmd());
+        return newSession;
     }
 
 
@@ -113,17 +112,6 @@ public class SessionManager {
         sessions.remove(session.getClientId());
         loginUsers.remove(session.getUid());
         session.close(true);
-    }
-
-    public static boolean isAreadyLogin(Message.Data data) {
-        String clientId = data.getClientId();
-        String uid = data.getSenderId();
-        String oldClientId = loginUsers.get(uid);
-        //同一个uid,不同的clientId,
-        if (!StringUtils.isEmpty(oldClientId) && !oldClientId.equals(clientId)) {
-            return true;
-        }
-        return false;
     }
 
 

@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import static com.big.data.service.impl.SessionManager.*;
 
+
 public class LoginHandler extends ProtocolHandler {
 
 
@@ -21,16 +22,29 @@ public class LoginHandler extends ProtocolHandler {
     @Override
     public void handleRequest(ChannelHandlerContext ctx, Data data) {
         logger.debug("登录消息");
-        if (isAreadyLogin(data)) {
-            // 让另一端下线,并清除以前的session
-            Message.Data.Builder offLineReply = Message.Data.newBuilder();
-            offLineReply.setId(UUID.randomUUID().toString());
-            offLineReply.setCmd(Message.Data.Cmd.OTHER_LOGGIN_VALUE);
-            offLineReply.setCreateTime(data.getCreateTime());
-            offLineReply.setReceiverId(data.getSenderId());
-            IMSession oldSession = getSession(data.getClientId());
-            oldSession.write(offLineReply.build());
-            removeSession(oldSession);
+        String clientId = data.getClientId();
+        IMSession oldSession = getSessionByUid(data.getSenderId());
+        if (oldSession != null) {
+            if (clientId.equals(oldSession.getClientId())) {
+                logger.debug("已经登录过,同一台机器:{}", data.getClientId());
+                Message.Data.Builder reply = Message.Data.newBuilder();
+                reply.setId(UUID.randomUUID().toString());
+                reply.setCmd(Message.Data.Cmd.LOGIN_ECHO_VALUE);
+                reply.setCreateTime(data.getCreateTime());
+                reply.setContent("已经登录过");
+                oldSession.write(reply.build());
+                return;
+            } else {
+                logger.debug("另一台机器登录:{}", data.getClientId());
+                Message.Data.Builder offLineReply = Message.Data.newBuilder();
+                offLineReply.setId(UUID.randomUUID().toString());
+                offLineReply.setCmd(Message.Data.Cmd.OTHER_LOGGIN_VALUE);
+                offLineReply.setCreateTime(data.getCreateTime());
+                offLineReply.setContent("帐号在另一台机器登录");
+                oldSession.write(offLineReply.build());
+                removeSession(oldSession);
+            }
+
         }
 
         // 创建新的用户信息
@@ -41,10 +55,16 @@ public class LoginHandler extends ProtocolHandler {
         newSession.setUid(data.getSenderId());
         newSession.setLoginTime(System.currentTimeMillis());
         onLogin(newSession);
-        logger.debug("登录成功,回应客户端:" + data.getSenderId());
-        reply(newSession, UUID.randomUUID().toString(), Message.Data.Cmd.LOGIN_ECHO_VALUE);
+        logger.debug("登录成功,回应客户端:{}", data.getClientId());
+        Message.Data.Builder reply = Message.Data.newBuilder();
+        reply.setId(UUID.randomUUID().toString());
+        reply.setCmd(Message.Data.Cmd.LOGIN_ECHO_VALUE);
+        reply.setCreateTime(System.currentTimeMillis());
+        reply.setContent("登录成功");
+        newSession.write(reply.build());
 
     }
+
 
     /**
      * 检查并发送离线消息

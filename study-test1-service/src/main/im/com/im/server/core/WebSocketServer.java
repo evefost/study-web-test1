@@ -1,4 +1,3 @@
-package com.im.server.core;
 /*
  * Copyright 2012 The Netty Project
  *
@@ -14,10 +13,9 @@ package com.im.server.core;
  * License for the specific language governing permissions and limitations
  * under the License.
  */
+package com.im.server.core;
 
 import com.big.data.service.MessageService;
-import com.im.protocol.Message;
-import com.im.server.web.WebSocketServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -29,8 +27,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
@@ -38,18 +34,38 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-
-public final class SocketServer {
-    private static final Logger logger = LoggerFactory.getLogger(SocketServer.class);
-    @Autowired
-    MessageService messageService;
-    @Value("${socket.port}")
+/**
+ * A HTTP server which serves Web Socket requests at:
+ * <p/>
+ * http://localhost:8080/websocket
+ * <p/>
+ * Open your browser at http://localhost:8080/, then the demo page will be loaded and a Web Socket connection will be
+ * made automatically.
+ * <p/>
+ * This server illustrates support for the different web socket specification versions and will work with:
+ * <p/>
+ * <ul>
+ * <li>Safari 5+ (draft-ietf-hybi-thewebsocketprotocol-00)
+ * <li>Chrome 6-13 (draft-ietf-hybi-thewebsocketprotocol-00)
+ * <li>Chrome 14+ (draft-ietf-hybi-thewebsocketprotocol-10)
+ * <li>Chrome 16+ (RFC 6455 aka draft-ietf-hybi-thewebsocketprotocol-17)
+ * <li>Firefox 7+ (draft-ietf-hybi-thewebsocketprotocol-10)
+ * <li>Firefox 11+ (RFC 6455 aka draft-ietf-hybi-thewebsocketprotocol-17)
+ * </ul>
+ */
+public class WebSocketServer {
+    static final boolean SSL = System.getProperty("ssl") != null;
+    static final int PORT = Integer.parseInt(System.getProperty("port", SSL ? "8443" : "8080"));
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     private int port;
+    @Autowired
+    private MessageService messageService;
 
-    @Value("${web.socket.port}")
-    private int websocketPort;
+
+    public int getPort() {
+        return port;
+    }
 
     public void setPort(int port) {
         this.port = port;
@@ -57,49 +73,19 @@ public final class SocketServer {
 
     public void start() {
 
-
-    }
-
-    private void startAppSocket(){
         new Thread(new Runnable() {
 
             public void run() {
-                logger.info("=====================>");
-                logger.info("ServerBootstrap 启动");
-                EventLoopGroup bossGroup = new NioEventLoopGroup();
-                EventLoopGroup workerGroup = new NioEventLoopGroup();
                 try {
-                    // 码创建 ServerBootstrap 实例
-                    ServerBootstrap bootstrap = new ServerBootstrap();
-                    bootstrap.group(bossGroup, workerGroup);
-                    bootstrap.channel(NioServerSocketChannel.class);
-                    // .添加 EchoServerHandler 到 Channel 的 ChannelPipeline
-                    bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
-                            logger.debug("新连接=======id>" + ch.id());
-                            messageService.addChannel(0, ch);
-                            ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new ProtobufDecoder(Message.Data.getDefaultInstance()));
-                            pipeline.addLast(new ProtobufEncoder());
-                            pipeline.addLast(new IMChannelHandler(messageService));
-                        }
-                    });
-
-                    bootstrap.bind(port).sync().channel().closeFuture().sync();
-                    System.out.println("绑定成功:");
+                    main(null);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    logger.error("绑定异常bindEx:" + e.toString());
-                } finally {
-                    workerGroup.shutdownGracefully();
-                    bossGroup.shutdownGracefully();
                 }
             }
         }).start();
     }
 
-    private void startWebSocket(){
+    public void main(String[] args) throws Exception {
         // Configure SSL.
         final SslContext sslCtx;
         if (SSL) {
@@ -121,7 +107,6 @@ public final class SocketServer {
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
                             logger.debug("新websocket接入 id:" + ch.id());
-                            messageService.addChannel(1, ch);
                             pipeline.addLast(new HttpServerCodec());
                             pipeline.addLast(new HttpObjectAggregator(65536));
                             pipeline.addLast(new WebSocketServerCompressionHandler());
@@ -140,6 +125,5 @@ public final class SocketServer {
             workerGroup.shutdownGracefully();
         }
     }
-
 
 }

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.im.server.web;
+package com.im.server.core;
 
 import com.big.data.service.MessageService;
 import com.big.data.service.impl.SessionManager;
