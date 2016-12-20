@@ -100,7 +100,6 @@ public class IMSession implements Serializable {
 
     public boolean write(Message.Data msg) {
         if (channel != null && channel.isActive()) {
-            Object txframe2 = null;
             if (decodeType == DECODE_TYPE_WEB_TEXT) {
                 TextWebSocketFrame txframe = new TextWebSocketFrame(printToString(msg));
                 channel.writeAndFlush(txframe).awaitUninterruptibly(5000);

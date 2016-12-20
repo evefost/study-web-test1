@@ -3,6 +3,8 @@ package impl;
 
 import com.big.data.entity.TestBean;
 import com.big.data.service.TestService;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +12,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Properties;
 
 /**
  * TestServiceImpl Tester.
@@ -50,6 +54,8 @@ public class TestServiceImplTest {
         System.out.print("nameById:" + nameById);
 
     }
+
+
 
 
 }
