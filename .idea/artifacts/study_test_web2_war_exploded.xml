@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="study-test-web2:war exploded">
-    <output-path>$PROJECT_DIR$/study-test-web2/target/study-web-test-debug</output-path>
+    <output-path>$PROJECT_DIR$/study-test-web2/target/study-web-dev-debug</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -39,10 +39,21 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.21" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.12" />
+          <element id="library" level="project" name="Maven: org.apache.kafka:kafka-clients:0.10.1.0" />
+          <element id="library" level="project" name="Maven: net.jpountz.lz4:lz4:1.3.0" />
+          <element id="library" level="project" name="Maven: org.xerial.snappy:snappy-java:1.1.2.6" />
+          <element id="library" level="project" name="Maven: org.apache.kafka:kafka_2.10:0.10.1.0" />
+          <element id="library" level="project" name="Maven: net.sf.jopt-simple:jopt-simple:4.9" />
+          <element id="library" level="project" name="Maven: com.yammer.metrics:metrics-core:2.2.0" />
+          <element id="library" level="project" name="Maven: org.scala-lang:scala-library:2.10.6" />
+          <element id="library" level="project" name="Maven: com.101tec:zkclient:0.9" />
+          <element id="library" level="project" name="Maven: org.apache.zookeeper:zookeeper:3.4.8" />
+          <element id="library" level="project" name="Maven: jline:jline:0.9.94" />
+          <element id="library" level="project" name="Maven: io.netty:netty:3.7.0.Final" />
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/study-test-web2/target/study-web-test-debug/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/study-test-web2/target/study-web-dev-debug/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="study-test-web2/web/Web" />
     </root>
