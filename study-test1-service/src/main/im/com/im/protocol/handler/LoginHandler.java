@@ -50,7 +50,7 @@ public class LoginHandler extends ProtocolHandler {
         // 创建新的用户信息
         IMSession newSession = getSession(data.getClientId());
         if (newSession == null) {
-            newSession = IMSession.buildSesion(ctx, data);
+            newSession = createScession(ctx, data);
         }
         newSession.setUid(data.getSenderId());
         newSession.setLoginTime(System.currentTimeMillis());

@@ -1,6 +1,8 @@
 package com.im.server.util;
 
 import com.im.server.core.ProtocolHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,15 +16,13 @@ import java.util.Map;
  */
 public class ProtocolHandllerLoader {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProtocolHandllerLoader.class);
+
     private static Map<Integer, ProtocolHandler> handlers = new HashMap<Integer, ProtocolHandler>();
 
-
     static {
-        System.out.println("load handler ===========================>>>>>>>>>>>");
-        System.out.println("load handler ===========================>>>>>>>>>>>");
-        System.out.println("load handler ===========================>>>>>>>>>>>");
+        logger.debug("加载protocol handlers...");
         try {
-            System.out.println("load handler of ServerHandler");
             Class cls = ProtocolHandler.class;
             List<String> packages = new ArrayList<String>();
             packages.add("com.im.protocol.handler");
@@ -33,22 +33,19 @@ public class ProtocolHandllerLoader {
             List<Class<?>> classes = new ArrayList<Class<?>>();
             for (Class<?> c : tocalClasses) {
                 if (cls.isAssignableFrom(c) && !cls.equals(c)) {
-                    System.out.println("handler[ " + c.getName() + " ]");
+                    logger.debug("handler[ " + c.getName() + " ]");
                     ProtocolHandler instance = (ProtocolHandler) c.newInstance();
                     handlers.put(instance.getCmd(), instance);
                 }
             }
-            System.out.println("handler size[ " + handlers.size() + " ]");
+            logger.debug("handler size[ " + handlers.size() + " ]");
             for (Class<?> c : classes) {
                 System.out.println(c.getName());
             }
 
         } catch (Exception e) {
-            System.out.println(e.toString());
+            logger.error("加载protocol handlers 失败:{}", e.toString());
         }
-        System.out.println("load handler ===========================<<<<<<<<<<<<<");
-        System.out.println("load handler ===========================<<<<<<<<<<<<<");
-        System.out.println("load handler ===========================<<<<<<<<<<<<<");
     }
 
     public static ProtocolHandler getProtocolHandler(Integer cmd) {

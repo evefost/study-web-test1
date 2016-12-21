@@ -1,6 +1,5 @@
 package com.im.server.core;
 
-import com.googlecode.protobuf.format.JsonFormat;
 import com.im.protocol.Message;
 import com.im.protocol.Message.Data;
 import io.netty.buffer.ByteBuf;
@@ -102,20 +101,17 @@ public class IMSession implements Serializable {
         if (channel != null && channel.isActive()) {
             Object txframe2 = null;
             if (decodeType == DECODE_TYPE_WEB_TEXT) {
-                TextWebSocketFrame txframe = new TextWebSocketFrame(printToString(msg));
+                String txt = printToString(msg);
+                logger.debug("传输格式:TextWebSocketFrame");
+                TextWebSocketFrame txframe = new TextWebSocketFrame(txt);
                 channel.writeAndFlush(txframe).awaitUninterruptibly(5000);
             } else if (decodeType == DECODE_TYPE_WEB_BINARY) {
+                logger.debug("传输格式:BinaryWebSocketFrame");
                 ByteBuf byteBuf = Unpooled.wrappedBuffer(msg.toByteArray());
-                try {
-                    Data.Builder builder = Data.newBuilder().mergeFrom(byteBuf.array());
-                    String s = JsonFormat.printToString(builder.build());
-                    logger.error("json =====" + s);
-                } catch (Exception e) {
-                    logger.error("json ==xxxxxx===");
-                }
                 BinaryWebSocketFrame binaryWebSocketFrame = new BinaryWebSocketFrame(byteBuf);
                 channel.writeAndFlush(binaryWebSocketFrame).awaitUninterruptibly(5000);
             } else {
+                logger.debug("传输格式:probuf");
                 return channel.writeAndFlush(msg).awaitUninterruptibly(5000);
             }
 

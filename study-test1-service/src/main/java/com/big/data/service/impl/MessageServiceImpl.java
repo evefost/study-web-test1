@@ -1,19 +1,13 @@
 package com.big.data.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.big.data.service.MessageService;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.im.protocol.JsonMsg;
 import com.im.protocol.Message;
 import com.im.server.core.IMSession;
-import io.netty.buffer.EmptyByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.SocketChannel;
-import com.im.server.util.Base64;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -64,21 +58,8 @@ public class MessageServiceImpl implements MessageService {
                 ctx.channel().write(new TextWebSocketFrame(textframe.text().toUpperCase()));
                 //Message.Data data = JSON.parseObject(textframe.text(), Message.Data.class);
 
-               // JsonMsg jsonMsg = JSON.parseObject(textframe.text(),JsonMsg.class);
-                JsonMsg jsonMsg = new JsonMsg();
-                jsonMsg.setId(UUID.randomUUID().toString());
-                jsonMsg.setCmd(Message.Data.Cmd.CHAT_TXT_ECHO_VALUE);
-                jsonMsg.setContent("ab消息类型");
-                jsonMsg.setCreateTime(new Date().getTime());
-                jsonMsg.setClientId(UUID.randomUUID().toString());
 
                 Message.Data.Builder reply = Message.Data.newBuilder();
-                reply.setId(jsonMsg.getId());
-                reply.setCmd(jsonMsg.getCmd());
-                reply.setContent(jsonMsg.getContent());
-                reply.setCreateTime(jsonMsg.getCreateTime());
-                reply.setClientId(jsonMsg.getClientId());
-
                 Message.Data data = reply.build();
                 sendProbuf(textframe.text());
             } else {

@@ -129,10 +129,13 @@ public class SessionManager {
         if (clienId != null) {
             IMSession imSession = sessions.get(clienId);
             sessions.remove(clienId);
-            String uid = imSession.getUid();
-            if (uid != null) {
-                loginUsers.remove(uid);
+            if (imSession != null) {
+                String uid = imSession.getUid();
+                if (uid != null) {
+                    loginUsers.remove(uid);
+                }
             }
+
         }
     }
 
