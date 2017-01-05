@@ -15,7 +15,6 @@
  */
 package com.im.server.core;
 
-import com.big.data.service.MessageService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -33,7 +32,6 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * A HTTP server which serves Web Socket requests at:
@@ -59,8 +57,6 @@ public class WebSocketServer {
     static final int PORT = Integer.parseInt(System.getProperty("port", SSL ? "8443" : "8080"));
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     private int port;
-    @Autowired
-    private MessageService messageService;
 
 
     public int getPort() {
@@ -110,7 +106,7 @@ public class WebSocketServer {
                             pipeline.addLast(new HttpServerCodec());
                             pipeline.addLast(new HttpObjectAggregator(65536));
                             pipeline.addLast(new WebSocketServerCompressionHandler());
-                            pipeline.addLast(new WebSocketServerHandler(messageService));
+                            pipeline.addLast(new WebSocketServerHandler());
                         }
                     });
 

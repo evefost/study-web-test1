@@ -15,7 +15,6 @@
  */
 package com.im.server.core;
 
-import com.big.data.service.MessageService;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -30,7 +29,6 @@ import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaderNames.HOST;
@@ -46,13 +44,9 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServerHandler.class);
     private static final String WEBSOCKET_PATH = "/websocket";
 
-    @Autowired
-    private MessageService messageService;
+
     private WebSocketServerHandshaker handshaker;
 
-    public WebSocketServerHandler(MessageService messageService) {
-        this.messageService = messageService;
-    }
 
     private static String getWebSocketLocation(FullHttpRequest req) {
         String location = req.headers().get(HOST) + WEBSOCKET_PATH;

@@ -15,7 +15,6 @@
  */
 package com.im.server.core;
 
-import com.big.data.service.MessageService;
 import com.im.protocol.Message;
 import com.im.protocol.Message.Data;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -31,14 +30,7 @@ import org.slf4j.LoggerFactory;
 public class IMChannelHandler extends SimpleChannelInboundHandler<Message.Data> {
     private static final Logger logger = LoggerFactory.getLogger(IMChannelHandler.class);
 
-    MessageService messageService;
 
-    /**
-     * Creates a client-side handler.
-     */
-    public IMChannelHandler(MessageService messageService) {
-        this.messageService = messageService;
-    }
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Data data) throws Exception {
