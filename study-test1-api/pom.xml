@@ -25,6 +25,11 @@
             <artifactId>protobuf-java-format</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>1.3.4</version>
+        </dependency>
     </dependencies>
     <artifactId>study-test1-api</artifactId>
 

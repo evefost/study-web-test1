@@ -1,5 +1,6 @@
 package com.big.data.service.impl;
 
+import com.baomidou.framework.service.impl.SuperServiceImpl;
 import com.big.data.constant.AppConfig;
 import com.big.data.dao.TestMapper;
 import com.big.data.entity.TestBean;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
  * Created by chargerlink on 2016/11/25.
  */
 @Service("testService")
-public class TestServiceImpl implements TestService {
+public class TestServiceImpl extends SuperServiceImpl<TestMapper, TestBean>  implements TestService {
     private static final Logger logger = LoggerFactory.getLogger(TestServiceImpl.class);
 
     @Autowired
@@ -39,7 +40,8 @@ public class TestServiceImpl implements TestService {
     }
 
     public String getEnviroment() {
-        TestBean t =  testDao.getNameById(1);
+       TestBean t =  testDao.getNameById(1);
+        //TestBean t =  selectById(1l);
         String env = appConfig.getPackageEnviroment() + "==" + t.getName();
         return env;
     }

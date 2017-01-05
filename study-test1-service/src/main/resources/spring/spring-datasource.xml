@@ -11,11 +11,18 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <!--使用baomidou插件-->
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:/mybatis-config.xml"/>
         <property name="typeAliasesPackage" value="com.big.data.entity"/>
         <property name="mapperLocations" value="classpath*:mapper/**/*Mapper.xml"/>
+        <property name="plugins">
+            <!-- 分页插件配置 -->
+            <bean class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                <property name="dialectType" value="mysql" />
+            </bean>
+        </property>
     </bean>
 
 
