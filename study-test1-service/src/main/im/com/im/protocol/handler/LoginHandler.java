@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 import java.util.UUID;
 
-import static com.big.data.service.impl.SessionManager.*;
+import static com.im.server.core.SessionManager.*;
 
 
 public class LoginHandler extends ProtocolHandler {

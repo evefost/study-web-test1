@@ -1,14 +1,14 @@
 package com.im.protocol.handler;
 
-import com.big.data.service.impl.SessionManager;
 import com.im.protocol.Message;
 import com.im.protocol.Message.Data;
 import com.im.protocol.Message.Data.Cmd;
 import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
+import com.im.server.core.SessionManager;
 import io.netty.channel.ChannelHandlerContext;
 
-import static com.big.data.service.impl.SessionManager.getSessionByUid;
+import static com.im.server.core.SessionManager.getSessionByUid;
 
 public class ChatMsgHandler extends ProtocolHandler {
 

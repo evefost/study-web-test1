@@ -6,8 +6,9 @@ import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
 import io.netty.channel.ChannelHandlerContext;
 
-import static com.big.data.service.impl.SessionManager.createScession;
-import static com.big.data.service.impl.SessionManager.getSession;
+import static com.im.server.core.SessionManager.createScession;
+import static com.im.server.core.SessionManager.getSession;
+
 
 /**
  * 绑定客户端信息:用户登录前

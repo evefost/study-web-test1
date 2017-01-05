@@ -8,6 +8,9 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/4.3.4.RELEASE/spring-webmvc-4.3.4.RELEASE-sources.jar!/" />
+      <root url="file://$USER_HOME$/Downloads/servlet_src" />
+      <root url="file://$USER_HOME$/Downloads/servlet_src" />
+      <root url="jar://$USER_HOME$/Downloads/javax.servlet的jar包.zip!/" />
     </SOURCES>
   </library>
 </component>

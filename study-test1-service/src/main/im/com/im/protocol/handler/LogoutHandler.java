@@ -6,7 +6,8 @@ import com.im.server.core.IMSession;
 import com.im.server.core.ProtocolHandler;
 import io.netty.channel.ChannelHandlerContext;
 
-import static com.big.data.service.impl.SessionManager.getSessionByUid;
+import static com.im.server.core.SessionManager.getSessionByUid;
+
 
 /***
  * 登出处理

@@ -16,7 +16,6 @@
 package com.im.server.core;
 
 import com.big.data.service.MessageService;
-import com.big.data.service.impl.SessionManager;
 import com.im.protocol.Message;
 import com.im.protocol.Message.Data;
 import io.netty.channel.ChannelHandler.Sharable;
