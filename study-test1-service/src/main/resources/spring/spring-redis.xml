@@ -53,8 +53,8 @@
     <!-- redis连接池 -->
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
           destroy-method="destroy">
-        <constructor-arg index="0" ref="sentinelConfig"/>
-        <constructor-arg index="1" ref="jedisPoolConfig"/>
+        <!--<constructor-arg index="0" ref="sentinelConfig"/>-->
+        <!--<constructor-arg index="1" ref="jedisPoolConfig"/>-->
 
         <property name="hostName" value="${spring.redis.url}"/>
         <property name="port" value="${spring.redis.port}"/>

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,22 +17,10 @@ import java.util.UUID;
 public class TestController {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
-
-    @Autowired
-    StringRedisTemplate stringRedisTemplate;
-
     @Autowired
     RedisTemplate<String, String> redisTemplate;
     private int index;
 
-    @RequestMapping(value = "cacheData", method = RequestMethod.GET)
-    @ResponseBody
-    public String cacheData() {
-        String s = UUID.randomUUID().toString();
-        index++;
-        stringRedisTemplate.opsForList().leftPush(s, s + "-" + index);
-        return s + "-" + index;
-    }
 
     @RequestMapping(value = "cacheData2", method = RequestMethod.GET)
     @ResponseBody
