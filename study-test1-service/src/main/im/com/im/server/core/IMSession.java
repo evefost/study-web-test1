@@ -8,7 +8,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import org.omg.CORBA.Object;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,17 +98,19 @@ public class IMSession implements Serializable {
 
     public boolean write(Message.Data msg) {
         if (channel != null && channel.isActive()) {
-            Object txframe2 = null;
+
             if (decodeType == DECODE_TYPE_WEB_TEXT) {
                 String txt = printToString(msg);
                 logger.debug("传输格式:TextWebSocketFrame");
                 TextWebSocketFrame txframe = new TextWebSocketFrame(txt);
                 channel.writeAndFlush(txframe).awaitUninterruptibly(5000);
+
             } else if (decodeType == DECODE_TYPE_WEB_BINARY) {
                 logger.debug("传输格式:BinaryWebSocketFrame");
                 ByteBuf byteBuf = Unpooled.wrappedBuffer(msg.toByteArray());
                 BinaryWebSocketFrame binaryWebSocketFrame = new BinaryWebSocketFrame(byteBuf);
                 channel.writeAndFlush(binaryWebSocketFrame).awaitUninterruptibly(5000);
+
             } else {
                 logger.debug("传输格式:probuf");
                 return channel.writeAndFlush(msg).awaitUninterruptibly(5000);

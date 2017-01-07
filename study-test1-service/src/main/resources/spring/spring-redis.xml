@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <!-- 连接池配置 -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 最大连接数 -->
+        <property name="maxTotal" value="${spring.redis.pool.maxTotal}"/>
+        <!-- 最大空闲连接数 -->
+        <property name="maxIdle" value="${spring.redis.pool.maxIdle}"/>
+        <!-- 每次释放连接的最大数目 -->
+        <property name="numTestsPerEvictionRun" value="${spring.redis.pool.numTestsPerEvictionRun}"/>
+        <!-- 释放连接的扫描间隔（毫秒） -->
+        <property name="timeBetweenEvictionRunsMillis" value="${spring.redis.pool.timeBetweenEvictionRunsMillis}"/>
+        <!-- 连接最小空闲时间 -->
+        <property name="minEvictableIdleTimeMillis" value="${spring.redis.pool.minEvictableIdleTimeMillis}"/>
+        <!-- 连接空闲多久后释放, 当空闲时间>该值 且 空闲连接>最大空闲连接数 时直接释放 -->
+        <property name="softMinEvictableIdleTimeMillis" value="${spring.redis.pool.softMinEvictableIdleTimeMillis}"/>
+        <!-- 获取连接时的最大等待毫秒数,小于零:阻塞不确定的时间,默认-1 -->
+        <property name="maxWaitMillis" value="${spring.redis.pool.maxWaitMillis}"/>
+        <!-- 在获取连接的时候检查有效性, 默认false -->
+        <property name="testOnBorrow" value="${spring.redis.pool.testOnBorrow}"/>
+        <!-- 在空闲时检查有效性, 默认false -->
+        <property name="testWhileIdle" value="${spring.redis.pool.testWhileIdle}"/>
+        <!-- 连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true -->
+        <property name="blockWhenExhausted" value="${spring.redis.pool.blockWhenExhausted}"/>
+
+    </bean>
+
+    <!-- redis 哨兵配置 -->
+    <bean id="sentinelConfig" class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
+        <property name="master">
+            <bean class="org.springframework.data.redis.connection.RedisNode">
+                <property name="name" value="mymaster"/>
+            </bean>
+        </property>
+        <property name="sentinels">
+            <set>
+                <bean class="org.springframework.data.redis.connection.RedisNode">
+                    <constructor-arg index="0" value="${spring.sentinel1.url}"/>
+                    <constructor-arg index="1" value="${spring.sentinel1.port}"/>
+                </bean>
+                <bean class="org.springframework.data.redis.connection.RedisNode">
+                    <constructor-arg index="0" value="${spring.sentinel2.url}"/>
+                    <constructor-arg index="1" value="${spring.sentinel2.port}"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <!-- redis连接池 -->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          destroy-method="destroy">
+        <constructor-arg index="0" ref="sentinelConfig"/>
+        <constructor-arg index="1" ref="jedisPoolConfig"/>
+
+        <property name="hostName" value="${spring.redis.url}"/>
+        <property name="port" value="${spring.redis.port}"/>
+        <property name="password" value="${spring.redis.password}"/>
+        <property name="timeout" value="${spring.redis.timeout}"/>
+        <property name="usePool" value="true"/>
+    </bean>
+
+    <bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
+        </property>
+    </bean>
+
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+    </bean>
+
+
+    <!--<bean id="cachePrefix" class="com.chargerlink.device.util.redis.CustomRedisCachePrefix">-->
+    <!--<constructor-arg value="${spring.redis.cachePrefix}"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">-->
+    <!--<constructor-arg ref="redisTemplate"/>-->
+    <!--<property name="cachePrefix" ref="cachePrefix"/>-->
+    <!--<property name="usePrefix" value="true"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="keyGenerator" class="com.chargerlink.device.util.redis.StringKeyGenerator"/>-->
+
+    <!--<cache:annotation-driven key-generator="keyGenerator"/>-->
+</beans>

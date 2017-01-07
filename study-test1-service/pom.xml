@@ -44,6 +44,7 @@
             <artifactId>mybatis</artifactId>
             <version>3.4.1</version>
         </dependency>
+
         <!--im config -->
         <dependency>
             <groupId>io.netty</groupId>
@@ -54,6 +55,18 @@
             <groupId>com.jcraft</groupId>
             <artifactId>jzlib</artifactId>
             <version>1.1.2</version>
+        </dependency>
+
+        <!--redis config-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.7.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.7.3</version>
         </dependency>
 
 

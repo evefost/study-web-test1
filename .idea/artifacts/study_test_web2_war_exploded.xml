@@ -25,6 +25,12 @@
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.4.1" />
           <element id="library" level="project" name="Maven: io.netty:netty-all:5.0.0.Alpha2" />
           <element id="library" level="project" name="Maven: com.jcraft:jzlib:1.1.2" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-redis:1.7.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-keyvalue:1.1.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:1.12.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-oxm:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: redis.clients:jedis:2.7.3" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.3.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.3.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.3.4.RELEASE" />
