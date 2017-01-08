@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequestMapping("/redis")
 public class TestController {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
-
+    //Main
     @Autowired
     RedisTemplate<String, String> redisTemplate;
     private int index;

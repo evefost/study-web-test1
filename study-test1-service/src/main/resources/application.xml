@@ -6,6 +6,6 @@
 
 
     <!-- spring配置 -->
-    <!--<import resource="classpath*:spring/spring-*.xml"/>-->
+    <import resource="classpath*:spring/spring-*.xml"/>
 
 </beans>

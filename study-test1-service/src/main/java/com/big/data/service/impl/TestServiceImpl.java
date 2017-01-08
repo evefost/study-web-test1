@@ -1,7 +1,6 @@
 package com.big.data.service.impl;
 
 import com.baomidou.framework.service.impl.SuperServiceImpl;
-import com.big.data.constant.AppConfig;
 import com.big.data.dao.TestMapper;
 import com.big.data.entity.TestBean;
 import com.big.data.service.MessageService;
@@ -20,8 +19,8 @@ public class TestServiceImpl extends SuperServiceImpl<TestMapper, TestBean>  imp
 
     @Autowired
     private TestMapper testDao;
-    @Autowired
-    private AppConfig appConfig;
+//    @Autowired
+//    private AppConfig appConfig;
 
     @Autowired
     private MessageService messageService;
@@ -42,7 +41,8 @@ public class TestServiceImpl extends SuperServiceImpl<TestMapper, TestBean>  imp
     public String getEnviroment() {
         //TestBean t =  testDao.getNameById(1);
         TestBean t = selectById(1l);
-        String env = appConfig.getPackageEnviroment() + "==" + t.getName();
-        return env;
+        //String env = appConfig.getPackageEnviroment() + "==" + t.getName();
+        // return env;
+        return null;
     }
 }
