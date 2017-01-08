@@ -88,11 +88,23 @@
                     <exclude>env/**</exclude>
                 </excludes>
             </resource>
+            <!--指定打包某个环境变量配置-->
             <resource>
-                <!--指定打包某个环境变量配置-->
                 <directory>src/main/resources/${package.environment}</directory>
                 <targetPath>properties</targetPath>
+                <excludes>
+                    <exclude>**/dubbo.properties</exclude>
+                </excludes>
                 <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources/${package.environment}</directory>
+
+                <filtering>true</filtering>
+
+                <includes>
+                    <include>**/dubbo.properties</include>
+                </includes>
             </resource>
             <resource>
                 <directory>src/main/resources/${package.mode}</directory>
