@@ -11,7 +11,7 @@
 	</appender>
 
 	<appender name="testAppender" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="../logs/app/service.log"/>
+		<param name="File" value="logs/service.log"/>
 		<param name="encoding" value="utf-8"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%-5p][%d{yyyy-MM-dd HH:mm:ss,SSS}][%c] :%m%n"/>

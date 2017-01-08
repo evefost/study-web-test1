@@ -122,7 +122,58 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <classesDirectory>target/classes/</classesDirectory>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+
+                </configuration>
+                <executions>
+                    <!-- 定义在prepare-package时将classes/com打jar -->
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 将spring的配置，psoperties等属性文件，不要打包到jar中，而是打包到外层的tar.gz中 -->
+                            <includes>
+                                <include>com/**</include>
+                                <include>mapper/**</include>
+                                <include>spring/**</include>
+                                <include>application.xml</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <!-- not append assembly id in release file name -->
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>${project.artifactId}-${package.name_suff}</finalName>
+                    <descriptors>
+                        <descriptor>src/main/assemble/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+
+
     </build>
 
 </project>
