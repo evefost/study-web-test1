@@ -4,16 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 
-    <!-- 引入属性文件 -->
-    <!--    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="locations" value="classpath*:properties/*.properties"/>
-        </bean>
+    <import resource="classpath:spring/spring-dubbo-consumer.xml"/>
+    <import resource="classpath:spring/spring-framework.xml"/>
 
-        <bean id="springs" class="com.chargerlink.util.spring.Springs"/>
-
-        <import resource="classpath*:/spring/applicationContext-jdbc.xml"/>
-        <import resource="classpath*:/spring/applicationContext-scheduler.xml"/>
-        <import resource="classpath*:/spring/spring-redis.xml"/>-->
-    <!--<import resource="classpath*:/spring/spring-tx.xml"/>-->
-    <!--<import resource="classpath*:spring/spring-*.xml"/>-->
 </beans>

@@ -81,27 +81,40 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--redis config-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.7.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+
+
         <!-- dubbo -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo</artifactId>
             <version>2.5.3</version>
             <exclusions>
-                <!--<exclusion>-->
-                <!--<artifactId>spring</artifactId>-->
-                <!--<groupId>org.springframework</groupId>-->
-                <!--</exclusion>-->
-                <!--<exclusion>-->
-                <!--<groupId>org.javassist</groupId>-->
-                <!--<artifactId>javassist</artifactId>-->
-                <!--</exclusion>-->
+                <exclusion>
+                    <artifactId>spring</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.javassist</groupId>-->
-        <!--<artifactId>javassist</artifactId>-->
-        <!--<version>3.18.0-GA</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.18.0-GA</version>
+        </dependency>
         <dependency>
             <groupId>com.github.sgroschupf</groupId>
             <artifactId>zkclient</artifactId>

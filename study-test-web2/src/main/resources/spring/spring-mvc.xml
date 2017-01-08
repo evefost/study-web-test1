@@ -14,8 +14,6 @@
         <property name="prefix" value="/WEB-INF/views/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
-    <import resource="classpath*:spring/*.xml"/>
-    <bean id="config" class="com.big.data.constant.AppConfig"/>
 
 
 </beans>

@@ -24,6 +24,7 @@
           init-method="start">
         <property name="port" value="${app.socket.port}"/>
     </bean>
+    <bean id="appConfig" class="com.big.data.constant.AppConfig"/>
 
 
 </beans>

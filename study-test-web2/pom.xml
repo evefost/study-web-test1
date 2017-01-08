@@ -18,7 +18,7 @@
 
         <dependency>
             <groupId>com.big.data</groupId>
-            <artifactId>study-test1-service</artifactId>
+            <artifactId>study-test1-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!--spring mvc 依懒-->
