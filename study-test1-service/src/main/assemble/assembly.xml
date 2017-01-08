@@ -32,6 +32,7 @@
                 <include>dubbo.properties</include>
                 <include>log4j.xml</include>
                 <include>properties/*.properties</include>
+                <include>xml/*.xml</include>
             </includes>
             <fileMode>0640</fileMode>
         </fileSet>
