@@ -9,4 +9,6 @@ public interface TestService {
     TestBean getNameById(Integer id);
 
     String getEnviroment();
+
+    String testRedis();
 }

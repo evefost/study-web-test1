@@ -9,7 +9,10 @@ import com.big.data.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * Created by chargerlink on 2016/11/25.
@@ -17,14 +20,15 @@ import org.springframework.stereotype.Service;
 @Service("testService")
 public class TestServiceImpl extends SuperServiceImpl<TestMapper, TestBean> implements TestService {
     private static final Logger logger = LoggerFactory.getLogger(TestServiceImpl.class);
-
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
     @Autowired
     private TestMapper testDao;
     @Autowired
     private AppConfig appConfig;
-
     @Autowired
     private MessageService messageService;
+    private int index;
 
     public String getVersion() {
         logger.debug("sdebug");
@@ -45,5 +49,13 @@ public class TestServiceImpl extends SuperServiceImpl<TestMapper, TestBean> impl
         //TestBean t = selectById(1l);
         String env = appConfig.getPackageEnviroment() + "==" + t.getName();
         return env;
+    }
+
+    public String testRedis() {
+        logger.info("testRedis");
+        String s = "redis-test" + UUID.randomUUID().toString();
+        index++;
+        redisTemplate.opsForList().leftPush(s, s + "---" + index);
+        return s + "-" + index;
     }
 }
