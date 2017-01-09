@@ -52,7 +52,8 @@ public class TestServiceImpl extends SuperServiceImpl<TestMapper, TestBean> impl
     }
 
     public String testRedis() {
-        logger.info("testRedis");
+        logger.debug("debug testRedis");
+        logger.error("errot testRedis");
         String s = "redis-test" + UUID.randomUUID().toString();
         index++;
         redisTemplate.opsForList().leftPush(s, s + "---" + index);

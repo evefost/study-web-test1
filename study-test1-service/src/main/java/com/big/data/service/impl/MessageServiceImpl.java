@@ -1,5 +1,6 @@
 package com.big.data.service.impl;
 
+import com.alibaba.dubbo.container.Main;
 import com.big.data.service.MessageService;
 import com.im.protocol.Message;
 import com.im.server.core.IMSession;

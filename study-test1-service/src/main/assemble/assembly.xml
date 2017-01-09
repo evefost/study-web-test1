@@ -30,7 +30,7 @@
             <!-- 将spring配置文件，properties配置文件放到tar包中 -->
             <includes>
                 <include>dubbo.properties</include>
-                <include>log4j.xml</include>
+                <include>log4j2.xml</include>
                 <include>properties/*.properties</include>
                 <include>xml/*.xml</include>
             </includes>
