@@ -14,13 +14,12 @@
 		<constructor-arg>
 			<map>
 				<entry key="bootstrap.servers" value="${bootstrap.servers}"/>
-				<entry key="group.id" value="55555"/>
-				<entry key="enable.auto.commit" value="true"/>
-				<entry key="auto.commit.interval.ms" value="1000"/>
-				<entry key="session.timeout.ms" value="15000"/>
-				<entry key="key.deserializer" value="org.apache.kafka.common.serialization.IntegerDeserializer"/>
-				<!--<entry key="value.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>-->
-				<entry key="value.deserializer" value="com.kafka.serialize.ObjectDeserializer"/>
+				<entry key="group.id" value="${group.id}"/>
+				<entry key="enable.auto.commit" value="${enable.auto.commit}"/>
+				<entry key="auto.commit.interval.ms" value="${auto.commit.interval.ms}"/>
+				<entry key="session.timeout.ms" value="${session.timeout.ms}"/>
+				<entry key="key.deserializer" value="${key.deserializer}"/>
+				<entry key="value.deserializer" value="${value.deserializer}"/>
 			</map>
 		</constructor-arg>
 	</bean>
