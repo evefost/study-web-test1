@@ -32,7 +32,7 @@ public class TestController {
     }
 
 
-    @RequestMapping(value = "queryPackageEnviroment", method = RequestMethod.GET)
+    @RequestMapping(value = "getEnviroment", method = RequestMethod.GET)
     @ResponseBody
     public String queryCurrentEnviroment() {
         String enviroment = testService.getEnviroment();
