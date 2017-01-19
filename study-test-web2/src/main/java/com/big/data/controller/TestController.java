@@ -1,5 +1,6 @@
 package com.big.data.controller;
 
+import com.big.data.entity.TestBean;
 import com.big.data.service.MessageService;
 import com.big.data.service.TestService;
 import org.slf4j.Logger;
@@ -15,11 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api/test")
 public class TestController {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
-
-    @Autowired
-    private TestService testService;
     @Autowired
     MessageService messageService;
+    @Autowired
+    private TestService testService;
 
     @RequestMapping(value = "serviceVersion", method = RequestMethod.GET)
     @ResponseBody
@@ -39,5 +39,14 @@ public class TestController {
         logger.info("evn:{}", enviroment);
         logger.error("env error{}", enviroment);
         return enviroment;
+    }
+
+    @RequestMapping(value = "getBean", method = RequestMethod.GET)
+    @ResponseBody
+    public TestBean getBean() {
+        TestBean t = new TestBean();
+        t.setId(12);
+        t.setName("abcdef");
+        return t;
     }
 }
