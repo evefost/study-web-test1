@@ -2,11 +2,17 @@
 <!DOCTYPE log4j:configuration SYSTEM
         "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 <log4j:configuration debug="true">
+    <!--log4j.appender.logfile.File=../logs/app.log，将日志记录到tomcat下的logs文件夹；-->
+    <!--log4j.appender.logfile.File=logs/app.log，将日志记录到tomcat的bin目录下的logs文件夹；-->
+    <!--（3）使用环境变量相对路径法：程序会优先找jvm环境变量，然后再找系统环境变量，来查找配置文件中的变量。-->
+    <!--log4j.appender.logfile.File=${user.dir}/logs/app.log，使用tomcat容器时${user.dir}对应tomcat的bin目录；-->
+    <!--log4j.appender.logfile.File=${user.home}/logs/app.log，${user.home}对应操作系统当前用户目录；-->
+    <!--log4j.appender.logfile.File=${webapp.root}/logs/app.log，${webApp.root}对应当前应用根目录；-->
 
     <!-- 按大小产生 biz -->
 
     <appender name="bizAppend" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="${webapp.root}/logs/biz.log"/>
+        <param name="File" value="${webapp.root}logs/biz.log"/>
         <param name="Append" value="true"/>
         <!--       <param name="DatePattern" value="'.'yyyy-MM-dd-HH'.log'"/>-->
         <param name="MaxBackupIndex" value="0"/>
@@ -31,7 +37,7 @@
 
     <!-- 按日期error log -->
     <appender name="errorAppend" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="${webapp.root}/logs/error/error.html"/>
+        <param name="File" value="${webapp.root}logs/error/error.html"/>
         <param name="Append" value="true"/>
         <param name="DatePattern" value="yyyy-MM-dd-HH-mm'.html'"/>
         <!--<param name="MaxBackupIndex" value="10"/>-->
